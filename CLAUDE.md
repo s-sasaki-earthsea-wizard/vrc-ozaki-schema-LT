@@ -1,12 +1,30 @@
-# Project Name
+# vrc-ozaki-schema-LT
 
 ## プロジェクト概要
 
-プロジェクトの概要を記載します。
+GeForce RTX (RTX 5080, Blackwell sm_120) で、CUDA 13.4 の cuBLAS FP64 エミュレーション
+(Ozaki scheme I / II) による DGEMM・PDE 計算の高速化と精度を、Docker で分離した
+CUDA 12 環境との対照実験で定量評価する。成果は VRChat 物理学集会の LT で発表する (slides-jp/)。
+
+### 技術仕様
+
+- 条件: `cuda12` (12.9.1) / `cuda13-native` / `cuda13-emu` (performant) / `cuda13-emu-eager`。
+  エミュレーションは `CUBLAS_EMULATE_DOUBLE_PRECISION` で実行時に切り替える
+- 両イメージともホストドライバの libcuda を使う (cuda13 イメージから forward-compat libcuda を削除済み)
+- ワークロード: DGEMM、2D 熱方程式 (ADI-GEMM / FTCS ステンシル = 負の対照)
+- 精度: NumPy 比較、厳密丸め参照 (TwoProduct + fsum) とのサンプル比較、PDE の離散厳密解との比較
+- カーネル確認: `profile_kernels.sh` (nsys) で実際に動いたカーネルから Ozaki-I / II / native を判定
+
+### 進捗
+
+- [x] ベンチマーク環境 (Docker / スクリプト / レポート生成)
+- [x] 本番測定 (phi=0.5): DGEMM 最大 19.2x、ADI 最大 15.9x、ステンシル 1.00x
+- [x] nsys によるカーネル確認、phi 掃引
+- [ ] スライド作成
 
 ## 言語設定
 
-このプロジェクトでは**日本語**での応答を行ってください。コード内のコメント、ログメッセージ、エラーメッセージ、ドキュメンテーション文字列なども日本語で記述してください。
+このプロジェクトでは**日本語**での応答を行ってください。ただし、コード内のコメント、ログメッセージ、エラーメッセージ、ドキュメンテーション文字列などは**英語**で記述してください。
 
 ## 開発ルール
 
