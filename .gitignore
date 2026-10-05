@@ -21,3 +21,10 @@ slides-jp/*.pdf
 
 # Claude Code local settings
 .claude/
+# Benchmark artifacts
+cache/
+results-quick/
+results/**/*.log
+
+# Session notes (not versioned)
+.claude-notes/
