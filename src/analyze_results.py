@@ -68,11 +68,17 @@ def style_axes(ax) -> None:
     ax.title.set_color(TEXT_PRIMARY)
 
 
-def new_figure(ncols: int = 1):
-    fig, axes = plt.subplots(1, ncols, figsize=(6.4 * ncols, 4.4), facecolor=SURFACE, squeeze=False)
-    for ax in axes[0]:
+def new_figure(panels: int = 1, max_cols: int = 3):
+    """Create a figure with `panels` axes wrapped into rows of at most max_cols."""
+    ncols = min(panels, max_cols)
+    nrows = -(-panels // ncols)
+    fig, grid = plt.subplots(nrows, ncols, figsize=(6.4 * ncols, 4.4 * nrows), facecolor=SURFACE, squeeze=False)
+    axes = list(grid.flat)
+    for ax in axes[panels:]:
+        ax.set_visible(False)
+    for ax in axes[:panels]:
         style_axes(ax)
-    return fig, axes[0]
+    return fig, axes[:panels]
 
 
 def finish(fig, path: Path, title: str) -> None:
@@ -192,6 +198,57 @@ def plot_dgemm(data: dict[str, dict], conditions: list[str], baseline: str, fig_
     finish(fig, fig_dir / "dgemm_error.png", "DGEMM accuracy vs correctly rounded reference (sampled)")
     figs.append("dgemm_error.png")
     return figs
+
+
+def plot_dgemm_phi(data: dict[str, dict], conditions: list[str], fig_dir: Path) -> list[str]:
+    """Throughput and accuracy as a function of the exponent-range parameter phi."""
+    lut = dgemm_lookup(data)
+    phis = sorted({k[1] for k in lut})
+    sizes = sorted({k[2] for k in lut})
+    if len(phis) < 2:
+        return []
+
+    def phi_axis(ax) -> None:
+        ax.set_xticks(phis)
+        ax.set_xticklabels([f"{p:g}" for p in phis])
+        ax.set_xlabel("phi (exponent range of the inputs)")
+
+    fig, axes = new_figure(len(sizes))
+    for ax, n in zip(axes, sizes):
+        for cond in conditions:
+            pts = [(phi, lut[(cond, phi, n)]["tflops_median"]) for phi in phis if (cond, phi, n) in lut]
+            if pts:
+                ax.plot(*zip(*pts), **series_style(conditions, cond))
+        phi_axis(ax)
+        ax.set_yscale("log")
+        ax.set_ylabel("TFLOPS (median)")
+        ax.set_title(f"N = {n}")
+        legend(ax)
+    finish(fig, fig_dir / "dgemm_phi_tflops.png", "DGEMM throughput vs input exponent range")
+
+    fig, axes = new_figure(len(sizes))
+    for ax, n in zip(axes, sizes):
+        numpy_ref: dict[float, float] = {}
+        for cond in conditions:
+            pts = []
+            for phi in phis:
+                ex = lut.get((cond, phi, n), {}).get("vs_exact_sampled")
+                if ex:
+                    pts.append((phi, ex["gpu"]["max_scaled_err_in_u"]))
+                    if "numpy" in ex:
+                        numpy_ref.setdefault(phi, ex["numpy"]["max_scaled_err_in_u"])
+            if pts:
+                ax.plot(*zip(*pts), **series_style(conditions, cond))
+        if numpy_ref:
+            ax.plot(*zip(*sorted(numpy_ref.items())), color=REFERENCE_GRAY, linestyle="--", linewidth=1.5,
+                    label="NumPy (CPU)")
+        phi_axis(ax)
+        ax.set_yscale("log")
+        ax.set_ylabel("max scaled error [u = 2^-53]")
+        ax.set_title(f"N = {n}")
+        legend(ax)
+    finish(fig, fig_dir / "dgemm_phi_error.png", "DGEMM accuracy vs input exponent range")
+    return ["dgemm_phi_tflops.png", "dgemm_phi_error.png"]
 
 
 def dgemm_table(data: dict[str, dict], conditions: list[str], baseline: str, native13: str) -> str:
@@ -388,6 +445,7 @@ def main() -> None:
     figs = []
     if dgemm:
         figs += plot_dgemm(dgemm, conditions, args.baseline, fig_dir)
+        figs += plot_dgemm_phi(dgemm, conditions, fig_dir)
     if pde:
         figs += plot_pde(pde, conditions, args.baseline, fig_dir)
     report = write_report(args, conditions, dgemm, pde, figs)
