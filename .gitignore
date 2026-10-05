@@ -24,7 +24,7 @@ slides-jp/*.pdf
 # Benchmark artifacts
 cache/
 results-quick/
-results/**/*.log
+results*/**/*.log
 
 # Session notes (not versioned)
 .claude-notes/

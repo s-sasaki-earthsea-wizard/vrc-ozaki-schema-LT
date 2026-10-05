@@ -195,4 +195,11 @@ def log(msg: str) -> None:
 
 
 if __name__ == "__main__":
-    print(json.dumps(collect_env_info(), indent=2, ensure_ascii=False))
+    import sys
+
+    info = collect_env_info()
+    print(json.dumps(info, indent=2, ensure_ascii=False))
+    # Write the file from Python: the CUDA images print a banner on stdout,
+    # so redirecting the container's output would not give valid JSON.
+    if len(sys.argv) > 1:
+        write_json(sys.argv[1], info)
