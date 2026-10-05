@@ -1,0 +1,231 @@
+{
+  "benchmark": "dgemm",
+  "condition": "cuda13-emu-eager",
+  "env": {
+    "condition": "cuda13-emu-eager",
+    "timestamp": "2026-10-05T17:08:03.013477+00:00",
+    "hostname": "d6cb14ed884f",
+    "python": "3.12.3",
+    "numpy": "2.2.6",
+    "numpy_blas": {
+      "name": "scipy-openblas",
+      "found": true,
+      "version": "0.3.29",
+      "detection method": "pkgconfig",
+      "include directory": "/opt/_internal/cpython-3.12.7/lib/python3.12/site-packages/scipy_openblas64/include",
+      "lib directory": "/opt/_internal/cpython-3.12.7/lib/python3.12/site-packages/scipy_openblas64/lib",
+      "openblas configuration": "OpenBLAS 0.3.29  USE64BITINT DYNAMIC_ARCH NO_AFFINITY Haswell MAX_THREADS=64",
+      "pc file directory": "/project/.openblas"
+    },
+    "cupy": "14.2.0",
+    "cuda_runtime": "13.2",
+    "cuda_toolkit": "13.4.2",
+    "cuda_driver_api": "13.1",
+    "cublas_version": 130800,
+    "libcublas_loaded": [
+      "/usr/local/cuda-13.4/targets/x86_64-linux/lib/libcublas.so.13.8.0.4",
+      "/usr/local/cuda-13.4/targets/x86_64-linux/lib/libcublasLt.so.13.8.0.4"
+    ],
+    "libcuda_loaded": [
+      "/usr/lib/x86_64-linux-gnu/libcuda.so.590.48.01"
+    ],
+    "gpu_name": "NVIDIA GeForce RTX 5080",
+    "compute_capability": "12.0",
+    "gpu_memory_gib": 15.47,
+    "nvidia_smi": {
+      "name": "NVIDIA GeForce RTX 5080",
+      "driver_version": "590.48.01",
+      "clocks.sm": "2670 MHz",
+      "clocks.max.sm": "3090 MHz",
+      "clocks.mem": "14801 MHz",
+      "temperature.gpu": "40",
+      "power.draw": "47.73 W",
+      "power.limit": "360.00 W",
+      "persistence_mode": "Disabled"
+    },
+    "emulation_env": {
+      "CUBLAS_EMULATE_DOUBLE_PRECISION": "1",
+      "CUBLAS_EMULATION_STRATEGY": "eager",
+      "CUBLAS_FIXEDPOINT_EMULATION_MANTISSA_BIT_COUNT": null,
+      "CUBLAS_EMULATION_SPECIAL_VALUES_SUPPORT_MASK": null
+    },
+    "cpu_count": 16
+  },
+  "config": {
+    "sizes": [
+      2000,
+      4000,
+      8000,
+      16000
+    ],
+    "phi": [
+      0.5
+    ],
+    "warmup": 1,
+    "repeats": 5,
+    "seed": 20261006,
+    "samples": 256,
+    "cpu_ref_max_n": 16000,
+    "cache_dir": "cache",
+    "no_cache": false,
+    "output": "results/cuda13-emu-eager/dgemm.json"
+  },
+  "results": [
+    {
+      "n": 2000,
+      "phi": 0.5,
+      "flops": 16000000000.0,
+      "status": "ok",
+      "times_s": [
+        0.002815392017364502,
+        0.0028016641139984133,
+        0.002799232006072998,
+        0.002789792060852051,
+        0.002789695978164673
+      ],
+      "median_s": 0.002799232006072998,
+      "min_s": 0.002789695978164673,
+      "max_s": 0.002815392017364502,
+      "std_s": 1.0572133644397855e-05,
+      "tflops_median": 5.715853478842638,
+      "tflops_best": 5.735392001578007,
+      "cpu_time_s": null,
+      "vs_numpy": {
+        "max_abs_err": 2.4868995751603507e-14,
+        "max_rel_err": 7.940053308376229e-16,
+        "fro_rel_err": 5.421244383480109e-16
+      },
+      "vs_exact_sampled": {
+        "gpu": {
+          "max_scaled_err_in_u": 0.10160103691082044,
+          "mean_scaled_err_in_u": 0.007741006801476009,
+          "max_elementwise_rel_err": 2.2056385904219815e-16,
+          "median_elementwise_rel_err": 0.0
+        },
+        "numpy": {
+          "max_scaled_err_in_u": 0.8586696859616698,
+          "mean_scaled_err_in_u": 0.15809745150734714,
+          "max_elementwise_rel_err": 3.847250374152267e-14,
+          "median_elementwise_rel_err": 6.173467857060335e-16
+        }
+      }
+    },
+    {
+      "n": 4000,
+      "phi": 0.5,
+      "flops": 128000000000.0,
+      "status": "ok",
+      "times_s": [
+        0.01427932834625244,
+        0.014281984329223632,
+        0.014287808418273925,
+        0.014265824317932128,
+        0.014277824401855469
+      ],
+      "median_s": 0.01427932834625244,
+      "min_s": 0.014265824317932128,
+      "max_s": 0.014287808418273925,
+      "std_s": 8.071371433724428e-06,
+      "tflops_median": 8.964007052446073,
+      "tflops_best": 8.972492380906733,
+      "cpu_time_s": null,
+      "vs_numpy": {
+        "max_abs_err": 3.730349362740526e-14,
+        "max_rel_err": 7.997124971544475e-16,
+        "fro_rel_err": 5.515023105528441e-16
+      },
+      "vs_exact_sampled": {
+        "gpu": {
+          "max_scaled_err_in_u": 0.10113332030908863,
+          "mean_scaled_err_in_u": 0.007835837438862714,
+          "max_elementwise_rel_err": 2.2194172885863467e-16,
+          "median_elementwise_rel_err": 0.0
+        },
+        "numpy": {
+          "max_scaled_err_in_u": 0.32269360400134195,
+          "mean_scaled_err_in_u": 0.1028620341859387,
+          "max_elementwise_rel_err": 4.6487040850339444e-14,
+          "median_elementwise_rel_err": 6.108768533959558e-16
+        }
+      }
+    },
+    {
+      "n": 8000,
+      "phi": 0.5,
+      "flops": 1024000000000.0,
+      "status": "ok",
+      "times_s": [
+        0.07927139282226563,
+        0.07463568115234374,
+        0.07465792083740234,
+        0.0763321304321289,
+        0.07651152038574219
+      ],
+      "median_s": 0.0763321304321289,
+      "min_s": 0.07463568115234374,
+      "max_s": 0.07927139282226563,
+      "std_s": 0.0018933872174741728,
+      "tflops_median": 13.415058563189126,
+      "tflops_best": 13.719979293949859,
+      "cpu_time_s": null,
+      "vs_numpy": {
+        "max_abs_err": 4.973799150320701e-14,
+        "max_rel_err": 6.992106463182623e-16,
+        "fro_rel_err": 5.708788203959777e-16
+      },
+      "vs_exact_sampled": {
+        "gpu": {
+          "max_scaled_err_in_u": 0.05199370699372786,
+          "mean_scaled_err_in_u": 0.005211725679571396,
+          "max_elementwise_rel_err": 2.1894197356916663e-16,
+          "median_elementwise_rel_err": 0.0
+        },
+        "numpy": {
+          "max_scaled_err_in_u": 0.29762614093136874,
+          "mean_scaled_err_in_u": 0.07275717018551384,
+          "max_elementwise_rel_err": 1.0163049652430869e-13,
+          "median_elementwise_rel_err": 5.238952635945902e-16
+        }
+      }
+    },
+    {
+      "n": 16000,
+      "phi": 0.5,
+      "flops": 8192000000000.0,
+      "status": "ok",
+      "times_s": [
+        0.5242887573242188,
+        0.52323388671875,
+        0.522175537109375,
+        0.5236737670898437,
+        0.5234407348632812
+      ],
+      "median_s": 0.5234407348632812,
+      "min_s": 0.522175537109375,
+      "max_s": 0.5242887573242188,
+      "std_s": 0.0007723960769660911,
+      "tflops_median": 15.650291340317043,
+      "tflops_best": 15.68821099002212,
+      "cpu_time_s": null,
+      "vs_numpy": {
+        "max_abs_err": 9.947598300641403e-14,
+        "max_rel_err": 8.939293260280367e-16,
+        "fro_rel_err": 6.026879175954292e-16
+      },
+      "vs_exact_sampled": {
+        "gpu": {
+          "max_scaled_err_in_u": 0.04991406292487938,
+          "mean_scaled_err_in_u": 0.004161650595958688,
+          "max_elementwise_rel_err": 2.2195097542181917e-16,
+          "median_elementwise_rel_err": 0.0
+        },
+        "numpy": {
+          "max_scaled_err_in_u": 0.20012058951122405,
+          "mean_scaled_err_in_u": 0.057634004907424846,
+          "max_elementwise_rel_err": 2.2379169436755822e-13,
+          "median_elementwise_rel_err": 6.702669635419131e-16
+        }
+      }
+    }
+  ]
+}
