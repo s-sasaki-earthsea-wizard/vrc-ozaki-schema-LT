@@ -1,0 +1,50 @@
+# Target environment: CUDA 13.4 (cuBLAS FP64 emulation with Ozaki-I / Ozaki-II).
+#
+# FP64 emulation is opt-in. It is toggled at runtime with
+# CUBLAS_EMULATE_DOUBLE_PRECISION=0/1 (see docker-compose.yml / run_benchmarks.sh),
+# so the same image serves both the "native" and the "emulated" condition.
+ARG BASE_IMAGE=nvidia/cuda:13.4.2-devel-ubuntu24.04
+FROM ${BASE_IMAGE}
+
+ARG CUPY_VERSION=14.2.0
+# 0: use the prebuilt wheel (dlopens the container's CUDA libs)
+# 1: build CuPy from source against /usr/local/cuda (slow, ~20+ min)
+ARG CUPY_FROM_SOURCE=0
+
+ENV DEBIAN_FRONTEND=noninteractive \
+    PYTHONUNBUFFERED=1 \
+    VIRTUAL_ENV=/opt/venv \
+    PATH=/opt/venv/bin:${PATH} \
+    CUDA_PATH=/usr/local/cuda \
+    CUPY_CACHE_DIR=/tmp/cupy_cache \
+    MPLCONFIGDIR=/tmp/matplotlib
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends python3 python3-venv python3-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN python3 -m venv ${VIRTUAL_ENV} && pip install --no-cache-dir --upgrade pip
+
+COPY docker/requirements.txt /tmp/requirements.txt
+RUN pip install --no-cache-dir -r /tmp/requirements.txt
+
+RUN if [ "${CUPY_FROM_SOURCE}" = "1" ]; then \
+        pip install --no-cache-dir --no-binary cupy "cupy==${CUPY_VERSION}"; \
+    else \
+        pip install --no-cache-dir "cupy-cuda13x==${CUPY_VERSION}"; \
+    fi
+
+# The image ships a forward-compatibility libcuda (R615). With cuda-compat-mode=ldconfig
+# the container toolkit puts it ahead of the host driver when the host is older, so
+# this container would run a different user-mode driver than the CUDA 12 one.
+# Forward compat is not supported on GeForce anyway; remove it and rely on CUDA 13.x
+# minor-version compatibility with the host driver (>= 580).
+ARG KEEP_CUDA_COMPAT=0
+RUN if [ "${KEEP_CUDA_COMPAT}" != "1" ]; then rm -rf /usr/local/cuda-*/compat; fi
+
+# Pip-installed CUDA libraries (nvidia-cublas-* etc.) would shadow the toolkit's cuBLAS.
+RUN if pip list 2>/dev/null | grep -i -E '^nvidia-(cublas|cuda-runtime)'; then \
+        echo "ERROR: pip-installed CUDA libraries found; they would shadow the toolkit cuBLAS" >&2; exit 1; \
+    fi
+
+WORKDIR /workspace

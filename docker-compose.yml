@@ -1,0 +1,49 @@
+# Two images, three-plus conditions:
+#   cuda12        : CUDA 12.x, native DGEMM                     (control)
+#   cuda13 (EMU=0): CUDA 13.4, native DGEMM                     (isolates library/version effects)
+#   cuda13 (EMU=1): CUDA 13.4, cuBLAS FP64 emulation (Ozaki)    (target)
+# The emulation switch is passed per run by run_benchmarks.sh via `-e`.
+
+x-bench-common: &bench-common
+  working_dir: /workspace
+  user: "${HOST_UID:-1000}:${HOST_GID:-1000}"
+  volumes:
+    # Whole project: src/ (code), results*/ (output), cache/ (NumPy references)
+    - .:/workspace
+  environment:
+    HOME: /tmp
+  deploy:
+    resources:
+      reservations:
+        devices:
+          - driver: nvidia
+            count: all
+            capabilities: [gpu]
+
+services:
+  cuda12:
+    <<: *bench-common
+    image: vrc-ozaki/cuda12:latest
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.cuda12
+      args:
+        BASE_IMAGE: ${CUDA12_BASE_IMAGE:-nvidia/cuda:12.9.1-devel-ubuntu22.04}
+        CUPY_FROM_SOURCE: ${CUPY_FROM_SOURCE:-0}
+
+  cuda13:
+    <<: *bench-common
+    image: vrc-ozaki/cuda13:latest
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.cuda13
+      args:
+        BASE_IMAGE: ${CUDA13_BASE_IMAGE:-nvidia/cuda:13.4.2-devel-ubuntu24.04}
+        CUPY_FROM_SOURCE: ${CUPY_FROM_SOURCE:-0}
+    environment:
+      HOME: /tmp
+      # The image declares NVIDIA_REQUIRE_CUDA=cuda>=13.4, which makes the container
+      # toolkit refuse to start on an R580/R590 driver. CUDA 13.x minor-version
+      # compatibility lets 13.4 user-space libraries run on driver >= 580, so we
+      # skip the check by default. Set to "false" once the host driver is R615+.
+      NVIDIA_DISABLE_REQUIRE: ${NVIDIA_DISABLE_REQUIRE:-true}
