@@ -1,0 +1,23 @@
+# DS_Store
+.DS_Store
+
+# .vscode
+.vscode
+
+# Node modules
+node_modules/
+
+# Media files
+media
+
+# Python cache
+__pycache__/
+
+# Documents
+docs
+
+# Generated PDF
+slides-jp/*.pdf
+
+# Claude Code local settings
+.claude/
