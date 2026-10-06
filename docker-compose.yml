@@ -1,10 +1,11 @@
-# Two images, three-plus conditions:
+# Three images:
 #   cuda12        : CUDA 12.x, native DGEMM                     (control)
 #   cuda13 (EMU=0): CUDA 13.4, native DGEMM                     (isolates library/version effects)
 #   cuda13 (EMU=1): CUDA 13.4, cuBLAS FP64 emulation (Ozaki)    (target)
+#   cpu           : C++/Eigen and NumPy (OpenBLAS) on the host CPU (CPU baseline)
 # The emulation switch is passed per run by run_benchmarks.sh via `-e`.
 
-x-bench-common: &bench-common
+x-workspace: &workspace
   working_dir: /workspace
   user: "${HOST_UID:-1000}:${HOST_GID:-1000}"
   volumes:
@@ -12,6 +13,9 @@ x-bench-common: &bench-common
     - .:/workspace
   environment:
     HOME: /tmp
+
+x-bench-common: &bench-common
+  <<: *workspace
   deploy:
     resources:
       reservations:
@@ -47,3 +51,15 @@ services:
       # compatibility lets 13.4 user-space libraries run on driver >= 580, so we
       # skip the check by default. Set to "false" once the host driver is R615+.
       NVIDIA_DISABLE_REQUIRE: ${NVIDIA_DISABLE_REQUIRE:-true}
+
+  cpu:
+    <<: *workspace
+    image: vrc-ozaki/cpu:latest
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.cpu
+    environment:
+      HOME: /tmp
+      # Bind OpenMP threads to cores in id order: 6 threads = P-cores, 14 = P+E, 16 = all.
+      OMP_PLACES: cores
+      OMP_PROC_BIND: close

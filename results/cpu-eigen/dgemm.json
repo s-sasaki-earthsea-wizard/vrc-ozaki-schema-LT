@@ -1,0 +1,518 @@
+{
+  "benchmark": "dgemm",
+  "condition": "cpu-eigen",
+  "config": {
+    "command": "dgemm",
+    "threads": [
+      6,
+      14,
+      16
+    ],
+    "binary": "build/cpp/cpu_bench",
+    "results_dir": "results",
+    "work_dir": "cache/cpu_work",
+    "cache_dir": "cache",
+    "no_cache": false,
+    "sizes": [
+      2000,
+      4000,
+      8000,
+      16000
+    ],
+    "phi": [
+      0.5
+    ],
+    "repeats": 3,
+    "seed": 20261006,
+    "samples": 256,
+    "no_numpy": false
+  },
+  "results": [
+    {
+      "n": 2000,
+      "phi": 0.5,
+      "flops": 16000000000.0,
+      "threads": 6,
+      "status": "ok",
+      "times_s": [
+        0.068614677,
+        0.056583821,
+        0.056825728
+      ],
+      "median_s": 0.056825728,
+      "min_s": 0.056583821,
+      "max_s": 0.068614677,
+      "std_s": 0.006877249130454051,
+      "tflops_median": 0.2815626048820703,
+      "tflops_best": 0.28276634057639904,
+      "vs_numpy": {
+        "max_abs_err": 2.842170943040401e-14,
+        "max_rel_err": 9.07434663814426e-16,
+        "fro_rel_err": 6.493446541645817e-16
+      },
+      "max_abs_diff_between_thread_configs": 0,
+      "vs_exact_sampled": {
+        "result": {
+          "max_scaled_err_in_u": 0.5822315870713901,
+          "mean_scaled_err_in_u": 0.1607075358651594,
+          "max_elementwise_rel_err": 3.2645447992596854e-14,
+          "median_elementwise_rel_err": 5.726223289680481e-16
+        },
+        "numpy": {
+          "max_scaled_err_in_u": 0.8586696859616698,
+          "mean_scaled_err_in_u": 0.15809745150734714,
+          "max_elementwise_rel_err": 3.847250374152267e-14,
+          "median_elementwise_rel_err": 6.173467857060335e-16
+        }
+      }
+    },
+    {
+      "n": 2000,
+      "phi": 0.5,
+      "flops": 16000000000.0,
+      "threads": 14,
+      "status": "ok",
+      "times_s": [
+        0.047364223,
+        0.047899536,
+        0.048076153
+      ],
+      "median_s": 0.047899536,
+      "min_s": 0.047364223,
+      "max_s": 0.048076153,
+      "std_s": 0.0003707195475374013,
+      "tflops_median": 0.33403246327897623,
+      "tflops_best": 0.33780771617429467,
+      "vs_numpy": {
+        "max_abs_err": 2.842170943040401e-14,
+        "max_rel_err": 9.07434663814426e-16,
+        "fro_rel_err": 6.493446541645817e-16
+      },
+      "max_abs_diff_between_thread_configs": 0,
+      "vs_exact_sampled": {
+        "result": {
+          "max_scaled_err_in_u": 0.5822315870713901,
+          "mean_scaled_err_in_u": 0.1607075358651594,
+          "max_elementwise_rel_err": 3.2645447992596854e-14,
+          "median_elementwise_rel_err": 5.726223289680481e-16
+        },
+        "numpy": {
+          "max_scaled_err_in_u": 0.8586696859616698,
+          "mean_scaled_err_in_u": 0.15809745150734714,
+          "max_elementwise_rel_err": 3.847250374152267e-14,
+          "median_elementwise_rel_err": 6.173467857060335e-16
+        }
+      }
+    },
+    {
+      "n": 2000,
+      "phi": 0.5,
+      "flops": 16000000000.0,
+      "threads": 16,
+      "status": "ok",
+      "times_s": [
+        0.155110457,
+        0.149350265,
+        0.148309172
+      ],
+      "median_s": 0.149350265,
+      "min_s": 0.148309172,
+      "max_s": 0.155110457,
+      "std_s": 0.00366335829903697,
+      "tflops_median": 0.10713071048116318,
+      "tflops_best": 0.10788274106202954,
+      "vs_numpy": {
+        "max_abs_err": 2.842170943040401e-14,
+        "max_rel_err": 9.07434663814426e-16,
+        "fro_rel_err": 6.493446541645817e-16
+      },
+      "max_abs_diff_between_thread_configs": 0,
+      "vs_exact_sampled": {
+        "result": {
+          "max_scaled_err_in_u": 0.5822315870713901,
+          "mean_scaled_err_in_u": 0.1607075358651594,
+          "max_elementwise_rel_err": 3.2645447992596854e-14,
+          "median_elementwise_rel_err": 5.726223289680481e-16
+        },
+        "numpy": {
+          "max_scaled_err_in_u": 0.8586696859616698,
+          "mean_scaled_err_in_u": 0.15809745150734714,
+          "max_elementwise_rel_err": 3.847250374152267e-14,
+          "median_elementwise_rel_err": 6.173467857060335e-16
+        }
+      }
+    },
+    {
+      "n": 4000,
+      "phi": 0.5,
+      "flops": 128000000000.0,
+      "threads": 6,
+      "status": "ok",
+      "times_s": [
+        0.574364018,
+        0.531258278,
+        0.577905727
+      ],
+      "median_s": 0.574364018,
+      "min_s": 0.531258278,
+      "max_s": 0.577905727,
+      "std_s": 0.0259699602804082,
+      "tflops_median": 0.22285518589014394,
+      "tflops_best": 0.24093742215533062,
+      "vs_numpy": {
+        "max_abs_err": 4.263256414560601e-14,
+        "max_rel_err": 9.13957139605083e-16,
+        "fro_rel_err": 6.814772654671035e-16
+      },
+      "max_abs_diff_between_thread_configs": 0,
+      "vs_exact_sampled": {
+        "result": {
+          "max_scaled_err_in_u": 0.5083966612633435,
+          "mean_scaled_err_in_u": 0.12405232904544054,
+          "max_elementwise_rel_err": 2.756561358345831e-13,
+          "median_elementwise_rel_err": 7.281514199342751e-16
+        },
+        "numpy": {
+          "max_scaled_err_in_u": 0.32269360400134195,
+          "mean_scaled_err_in_u": 0.1028620341859387,
+          "max_elementwise_rel_err": 4.6487040850339444e-14,
+          "median_elementwise_rel_err": 6.108768533959558e-16
+        }
+      }
+    },
+    {
+      "n": 4000,
+      "phi": 0.5,
+      "flops": 128000000000.0,
+      "threads": 14,
+      "status": "ok",
+      "times_s": [
+        0.401768105,
+        0.358779014,
+        0.357780502
+      ],
+      "median_s": 0.358779014,
+      "min_s": 0.357780502,
+      "max_s": 0.401768105,
+      "std_s": 0.025112972042704778,
+      "tflops_median": 0.3567655715782752,
+      "tflops_best": 0.35776125105889645,
+      "vs_numpy": {
+        "max_abs_err": 4.263256414560601e-14,
+        "max_rel_err": 9.13957139605083e-16,
+        "fro_rel_err": 6.814772654671035e-16
+      },
+      "max_abs_diff_between_thread_configs": 0,
+      "vs_exact_sampled": {
+        "result": {
+          "max_scaled_err_in_u": 0.5083966612633435,
+          "mean_scaled_err_in_u": 0.12405232904544054,
+          "max_elementwise_rel_err": 2.756561358345831e-13,
+          "median_elementwise_rel_err": 7.281514199342751e-16
+        },
+        "numpy": {
+          "max_scaled_err_in_u": 0.32269360400134195,
+          "mean_scaled_err_in_u": 0.1028620341859387,
+          "max_elementwise_rel_err": 4.6487040850339444e-14,
+          "median_elementwise_rel_err": 6.108768533959558e-16
+        }
+      }
+    },
+    {
+      "n": 4000,
+      "phi": 0.5,
+      "flops": 128000000000.0,
+      "threads": 16,
+      "status": "ok",
+      "times_s": [
+        1.23014516,
+        1.25151739,
+        1.23545289
+      ],
+      "median_s": 1.23545289,
+      "min_s": 1.23014516,
+      "max_s": 1.25151739,
+      "std_s": 0.011128135312319916,
+      "tflops_median": 0.10360573117441979,
+      "tflops_best": 0.10405276073272524,
+      "vs_numpy": {
+        "max_abs_err": 4.263256414560601e-14,
+        "max_rel_err": 9.13957139605083e-16,
+        "fro_rel_err": 6.814772654671035e-16
+      },
+      "max_abs_diff_between_thread_configs": 0,
+      "vs_exact_sampled": {
+        "result": {
+          "max_scaled_err_in_u": 0.5083966612633435,
+          "mean_scaled_err_in_u": 0.12405232904544054,
+          "max_elementwise_rel_err": 2.756561358345831e-13,
+          "median_elementwise_rel_err": 7.281514199342751e-16
+        },
+        "numpy": {
+          "max_scaled_err_in_u": 0.32269360400134195,
+          "mean_scaled_err_in_u": 0.1028620341859387,
+          "max_elementwise_rel_err": 4.6487040850339444e-14,
+          "median_elementwise_rel_err": 6.108768533959558e-16
+        }
+      }
+    },
+    {
+      "n": 8000,
+      "phi": 0.5,
+      "flops": 1024000000000.0,
+      "threads": 6,
+      "status": "ok",
+      "times_s": [
+        4.76398088,
+        4.84328226,
+        4.72429893
+      ],
+      "median_s": 4.76398088,
+      "min_s": 4.72429893,
+      "max_s": 4.84328226,
+      "std_s": 0.06058107356206737,
+      "tflops_median": 0.2149462866861884,
+      "tflops_best": 0.2167517371725671,
+      "vs_numpy": {
+        "max_abs_err": 6.394884621840902e-14,
+        "max_rel_err": 8.989851166949086e-16,
+        "fro_rel_err": 7.042181405148737e-16
+      },
+      "max_abs_diff_between_thread_configs": 0,
+      "vs_exact_sampled": {
+        "result": {
+          "max_scaled_err_in_u": 0.3546465279325836,
+          "mean_scaled_err_in_u": 0.08911038906852292,
+          "max_elementwise_rel_err": 4.838887215141028e-14,
+          "median_elementwise_rel_err": 6.848177415679275e-16
+        },
+        "numpy": {
+          "max_scaled_err_in_u": 0.29762614093136874,
+          "mean_scaled_err_in_u": 0.07275717018551384,
+          "max_elementwise_rel_err": 1.0163049652430869e-13,
+          "median_elementwise_rel_err": 5.238952635945902e-16
+        }
+      }
+    },
+    {
+      "n": 8000,
+      "phi": 0.5,
+      "flops": 1024000000000.0,
+      "threads": 14,
+      "status": "ok",
+      "times_s": [
+        2.98254261,
+        3.07641992,
+        3.04253023
+      ],
+      "median_s": 3.04253023,
+      "min_s": 2.98254261,
+      "max_s": 3.07641992,
+      "std_s": 0.04753941342787178,
+      "tflops_median": 0.3365619805197465,
+      "tflops_best": 0.3433312223492425,
+      "vs_numpy": {
+        "max_abs_err": 6.394884621840902e-14,
+        "max_rel_err": 8.989851166949086e-16,
+        "fro_rel_err": 7.042181405148737e-16
+      },
+      "max_abs_diff_between_thread_configs": 0,
+      "vs_exact_sampled": {
+        "result": {
+          "max_scaled_err_in_u": 0.3546465279325836,
+          "mean_scaled_err_in_u": 0.08911038906852292,
+          "max_elementwise_rel_err": 4.838887215141028e-14,
+          "median_elementwise_rel_err": 6.848177415679275e-16
+        },
+        "numpy": {
+          "max_scaled_err_in_u": 0.29762614093136874,
+          "mean_scaled_err_in_u": 0.07275717018551384,
+          "max_elementwise_rel_err": 1.0163049652430869e-13,
+          "median_elementwise_rel_err": 5.238952635945902e-16
+        }
+      }
+    },
+    {
+      "n": 8000,
+      "phi": 0.5,
+      "flops": 1024000000000.0,
+      "threads": 16,
+      "status": "ok",
+      "times_s": [
+        10.1604276,
+        8.78238701,
+        8.76710027
+      ],
+      "median_s": 8.78238701,
+      "min_s": 8.76710027,
+      "max_s": 10.1604276,
+      "std_s": 0.800061518533867,
+      "tflops_median": 0.11659700248167496,
+      "tflops_best": 0.1168003066537301,
+      "vs_numpy": {
+        "max_abs_err": 6.394884621840902e-14,
+        "max_rel_err": 8.989851166949086e-16,
+        "fro_rel_err": 7.042181405148737e-16
+      },
+      "max_abs_diff_between_thread_configs": 0,
+      "vs_exact_sampled": {
+        "result": {
+          "max_scaled_err_in_u": 0.3546465279325836,
+          "mean_scaled_err_in_u": 0.08911038906852292,
+          "max_elementwise_rel_err": 4.838887215141028e-14,
+          "median_elementwise_rel_err": 6.848177415679275e-16
+        },
+        "numpy": {
+          "max_scaled_err_in_u": 0.29762614093136874,
+          "mean_scaled_err_in_u": 0.07275717018551384,
+          "max_elementwise_rel_err": 1.0163049652430869e-13,
+          "median_elementwise_rel_err": 5.238952635945902e-16
+        }
+      }
+    },
+    {
+      "n": 16000,
+      "phi": 0.5,
+      "flops": 8192000000000.0,
+      "threads": 6,
+      "status": "ok",
+      "times_s": [
+        38.1892193,
+        39.062228,
+        39.1617271
+      ],
+      "median_s": 39.062228,
+      "min_s": 38.1892193,
+      "max_s": 39.1617271,
+      "std_s": 0.5350725312574213,
+      "tflops_median": 0.209716660299049,
+      "tflops_best": 0.2145108004341948,
+      "vs_numpy": {
+        "max_abs_err": 1.1368683772161603e-13,
+        "max_rel_err": 1.0216335154606133e-15,
+        "fro_rel_err": 7.477026605383669e-16
+      },
+      "max_abs_diff_between_thread_configs": 0,
+      "vs_exact_sampled": {
+        "result": {
+          "max_scaled_err_in_u": 0.26125978389220766,
+          "mean_scaled_err_in_u": 0.06557436984470733,
+          "max_elementwise_rel_err": 8.038826458277533e-14,
+          "median_elementwise_rel_err": 6.84743848006489e-16
+        },
+        "numpy": {
+          "max_scaled_err_in_u": 0.20012058951122405,
+          "mean_scaled_err_in_u": 0.057634004907424846,
+          "max_elementwise_rel_err": 2.2379169436755822e-13,
+          "median_elementwise_rel_err": 6.702669635419131e-16
+        }
+      }
+    },
+    {
+      "n": 16000,
+      "phi": 0.5,
+      "flops": 8192000000000.0,
+      "threads": 14,
+      "status": "ok",
+      "times_s": [
+        24.8282007,
+        25.2585417,
+        25.4568159
+      ],
+      "median_s": 25.2585417,
+      "min_s": 24.8282007,
+      "max_s": 25.4568159,
+      "std_s": 0.3213676773670301,
+      "tflops_median": 0.32432592891932477,
+      "tflops_best": 0.3299473892201943,
+      "vs_numpy": {
+        "max_abs_err": 1.1368683772161603e-13,
+        "max_rel_err": 1.0216335154606133e-15,
+        "fro_rel_err": 7.477026605383669e-16
+      },
+      "max_abs_diff_between_thread_configs": 0,
+      "vs_exact_sampled": {
+        "result": {
+          "max_scaled_err_in_u": 0.26125978389220766,
+          "mean_scaled_err_in_u": 0.06557436984470733,
+          "max_elementwise_rel_err": 8.038826458277533e-14,
+          "median_elementwise_rel_err": 6.84743848006489e-16
+        },
+        "numpy": {
+          "max_scaled_err_in_u": 0.20012058951122405,
+          "mean_scaled_err_in_u": 0.057634004907424846,
+          "max_elementwise_rel_err": 2.2379169436755822e-13,
+          "median_elementwise_rel_err": 6.702669635419131e-16
+        }
+      }
+    },
+    {
+      "n": 16000,
+      "phi": 0.5,
+      "flops": 8192000000000.0,
+      "threads": 16,
+      "status": "ok",
+      "times_s": [
+        74.7943813,
+        75.317718,
+        74.2541179
+      ],
+      "median_s": 74.7943813,
+      "min_s": 74.2541179,
+      "max_s": 75.317718,
+      "std_s": 0.5318224979048408,
+      "tflops_median": 0.10952694383742433,
+      "tflops_best": 0.11032384777679785,
+      "vs_numpy": {
+        "max_abs_err": 1.1368683772161603e-13,
+        "max_rel_err": 1.0216335154606133e-15,
+        "fro_rel_err": 7.477026605383669e-16
+      },
+      "max_abs_diff_between_thread_configs": 0,
+      "vs_exact_sampled": {
+        "result": {
+          "max_scaled_err_in_u": 0.26125978389220766,
+          "mean_scaled_err_in_u": 0.06557436984470733,
+          "max_elementwise_rel_err": 8.038826458277533e-14,
+          "median_elementwise_rel_err": 6.84743848006489e-16
+        },
+        "numpy": {
+          "max_scaled_err_in_u": 0.20012058951122405,
+          "mean_scaled_err_in_u": 0.057634004907424846,
+          "max_elementwise_rel_err": 2.2379169436755822e-13,
+          "median_elementwise_rel_err": 6.702669635419131e-16
+        }
+      }
+    }
+  ],
+  "env": {
+    "condition": "cpu-eigen",
+    "timestamp": "2026-10-06T04:25:36+0000",
+    "python": "3.12.3",
+    "numpy": "2.2.6",
+    "threadpools": [
+      {
+        "user_api": "blas",
+        "internal_api": "openblas",
+        "version": "0.3.29",
+        "num_threads": 16,
+        "architecture": "Haswell"
+      }
+    ],
+    "cpu_model": "Intel(R) Core(TM) Ultra 9 285H",
+    "cpu_count": 16,
+    "cpp": {
+      "eigen_version": "3.4.0",
+      "avx2": true,
+      "eigen_fma": true,
+      "simd": "AVX SSE, SSE2, SSE3, SSSE3, SSE4.1, SSE4.2",
+      "compiler": "13.3.0",
+      "openmp": 201511,
+      "omp_max_threads": 16
+    },
+    "omp_env": {
+      "OMP_PLACES": "cores",
+      "OMP_PROC_BIND": "close"
+    }
+  }
+}

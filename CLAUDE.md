@@ -10,6 +10,9 @@ CUDA 12 環境との対照実験で定量評価する。成果は VRChat 物理�
 
 - 条件: `cuda12` (12.9.1) / `cuda13-native` / `cuda13-emu` (performant) / `cuda13-emu-eager`。
   エミュレーションは `CUBLAS_EMULATE_DOUBLE_PRECISION` で実行時に切り替える
+- CPU ベースライン: `cpu-eigen` (C++17 + Eigen 3.4 ネイティブ GEMM + OpenMP, `cpp/cpu_bench`) と
+  `cpu-numpy` (OpenBLAS)。入力は Python が `.npy` で渡し、精度評価も Python 側の同じロジックで行う。
+  スレッド 6 / 14 / 16 (P / P+E / 全コア) を掃引し、最速を代表値にする
 - 両イメージともホストドライバの libcuda を使う (cuda13 イメージから forward-compat libcuda を削除済み)
 - ワークロード: DGEMM、2D 熱方程式 (ADI-GEMM / FTCS ステンシル = 負の対照)
 - 精度: NumPy 比較、厳密丸め参照 (TwoProduct + fsum) とのサンプル比較、PDE の離散厳密解との比較
@@ -20,6 +23,7 @@ CUDA 12 環境との対照実験で定量評価する。成果は VRChat 物理�
 - [x] ベンチマーク環境 (Docker / スクリプト / レポート生成)
 - [x] 本番測定 (phi=0.5): DGEMM 最大 19.2x、ADI 最大 15.9x、ステンシル 1.00x
 - [x] nsys によるカーネル確認、phi 掃引
+- [x] C++/Eigen の CPU ベースライン: Eigen 比で GPU native 2.5x、GPU Ozaki 48x (DGEMM N=16000)、ADI 39x
 - [ ] スライド作成
 
 ## 言語設定

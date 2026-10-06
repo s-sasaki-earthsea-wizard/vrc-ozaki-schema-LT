@@ -28,3 +28,6 @@ results*/**/*.log
 
 # Session notes (not versioned)
 .claude-notes/
+
+# C++ build output
+build/
