@@ -1,0 +1,25 @@
+# CPU baseline environment: C++17 + Eigen 3.4 (native Eigen GEMM, no BLAS backend) + OpenMP,
+# plus the same pinned NumPy as the GPU images for input generation and accuracy checks.
+# The C++ code is compiled at run time (run_cpu_benchmarks.sh) from the mounted cpp/ directory
+# with -march=native for the benchmark host.
+ARG BASE_IMAGE=ubuntu:24.04
+FROM ${BASE_IMAGE}
+
+ENV DEBIAN_FRONTEND=noninteractive \
+    PYTHONUNBUFFERED=1 \
+    VIRTUAL_ENV=/opt/venv \
+    PATH=/opt/venv/bin:${PATH} \
+    MPLCONFIGDIR=/tmp/matplotlib
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        build-essential cmake libeigen3-dev \
+        python3 python3-venv python3-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN python3 -m venv ${VIRTUAL_ENV} && pip install --no-cache-dir --upgrade pip
+
+COPY docker/requirements.txt docker/requirements-cpu.txt /tmp/
+RUN pip install --no-cache-dir -r /tmp/requirements-cpu.txt
+
+WORKDIR /workspace

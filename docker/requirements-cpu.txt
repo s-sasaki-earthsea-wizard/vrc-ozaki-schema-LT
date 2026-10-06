@@ -1,0 +1,3 @@
+-r requirements.txt
+# Runtime control of OpenBLAS threads for the NumPy thread sweep.
+threadpoolctl==3.6.0
