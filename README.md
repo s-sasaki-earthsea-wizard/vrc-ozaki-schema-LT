@@ -22,6 +22,23 @@
 - **Ozaki の正味の効果** = `cuda13-emu*` vs `cuda13-native`
 - **「CUDA を上げるだけで何が変わるか」** = `cuda13-emu*` vs `cuda12`
 
+### CPU ベースライン (C++ / Eigen)
+
+「GPU のエミュレーション FP64 は、ちゃんと書いた CPU の FP64 と比べてどうか」を見るため、CPU 側に 2 条件を置く。
+
+| 条件 | 実装 | 役割 |
+|---|---|---|
+| `cpu-eigen` | C++17 + Eigen 3.4 のネイティブ GEMM (BLAS 委譲なし) + OpenMP、`-O3 -march=native` (AVX2 + FMA) | CPU 代表 (`--cpu-ref`) |
+| `cpu-numpy` | NumPy → OpenBLAS 0.3.29 | 定番ライブラリの参照 |
+
+- 入力は GPU 版と同じ関数・同じシードで Python が生成し、`.npy` で C++ (`cpp/cpu_bench`) に渡す。
+  結果も `.npy` で戻し、精度評価は GPU と同じロジックで行うので、全条件が同じデータ・同じ物差しで比べられる
+- CPU は P コア 6 + E コア 8 + LP-E コア 2 のハイブリッド構成。`OMP_PLACES=cores OMP_PROC_BIND=close` で
+  コア ID 順に割り当て、**6 (P のみ) / 14 (P+E) / 16 (全コア)** スレッドを掃引し、最速の構成を代表値にする
+  (全構成は report.md の「CPU thread sweep」に残る)
+- PDE は Eigen 版のみ (ADI は Eigen GEMM、FTCS は OpenMP + SIMD のループ)。NumPy のスライス版ステンシルは
+  CPU の実力を表さないので速度比較には使わない
+
 ### ワークロード
 
 | ベンチ | 内容 | cuBLAS | 期待 |
@@ -97,6 +114,10 @@
 | φ 依存性 (N=8000) | φ=0 → 4 で 17.1x → 12.4x。指数レンジが広いほど遅くなるが、精度は保たれる |
 | 実行カーネル | エミュレーション時は常に **Ozaki-II** (`oz2_int8_dgemm` + INT8 Tensor Core `nvjet_sm120_biu_mma`)。native は `cutlass_80_tensorop_d884gemm` |
 | performant vs eager | N=512 では performant が native を選ぶが、eager (Ozaki-II) の方が 2.4x 速い |
+| CPU (C++/Eigen, 14 スレッド) | DGEMM 0.30–0.36 TFLOPS、OpenBLAS は 0.21–0.38 TFLOPS。Eigen 比で GPU native は **2.2–2.6x**、GPU Ozaki は **16–48x** (φ 掃引を含む) |
+| CPU の PDE | ADI: GPU Ozaki が Eigen 比 11.7–39x。FTCS: GPU は Ozaki と無関係に 6.5–18x (メモリ帯域の差) |
+| CPU の精度 | Eigen / OpenBLAS の scaled err は 0.2–0.9u (φ=0.5)、N=8000・φ=4 で 25–27u。Ozaki (0.05–1.9u) はどちらより小さい |
+| CPU のスレッド | 14 (P+E) が DGEMM / ADI で最速。16 (LP-E コアを含む) は Eigen で約 3 倍遅くなる。FTCS (メモリ律速) は 6 (P のみ) が最速 |
 
 ### カーネル確認 (Nsight Systems)
 
@@ -124,8 +145,13 @@ make quick        # 小サイズでの動作確認 (results-quick/)
 make bench        # 本番 (results/)。DGEMM + PDE、全 4 条件、最後にレポート生成
 make phi-sweep    # φ = 0, 0.5, 1, 2, 4 の DGEMM 比較 (results-phi/)
 make profile      # nsys で実行カーネルを確認 (results/nsys/)
+make cpu-quick    # C++/Eigen + NumPy の CPU ベースラインを小サイズで動作確認 (results-quick/)
+make cpu-bench    # CPU ベースライン本番 (results/)。DGEMM + PDE、スレッド 6/14/16
+make cpu-phi-sweep  # CPU の φ 掃引 (results-phi/)。THREADS=14 のようにスレッド数を指定
 make analyze      # results/ と results-phi/ から図と report.md を再生成
 ```
+
+GPU と CPU のベンチは**同時に走らせない** (どちらもホスト CPU を使うため)。
 
 `run_benchmarks.sh` は環境変数で調整できる:
 
@@ -152,7 +178,9 @@ results/
 │   ├── dgemm_speedup.png
 │   ├── dgemm_error.png
 │   ├── pde_time_per_step.png
-│   └── pde_speedup.png
+│   ├── pde_speedup.png
+│   ├── dgemm_speedup_vs_cpu.png   # cpu-eigen 基準の speedup (CPU 結果がある場合)
+│   └── pde_speedup_vs_cpu.png
 ├── nsys/
 │   ├── <condition>/  # *.nsys-rep と NVTX 範囲内のカーネル集計 CSV
 │   ├── kernels.json
@@ -162,7 +190,7 @@ results/
 results-phi/          # φ 掃引 (図に dgemm_phi_tflops.png / dgemm_phi_error.png が加わる)
 ```
 
-NumPy の参照解は `cache/` にキャッシュされ、全条件で同じものを使う (NumPy は両イメージで同一バージョンに固定)。
+NumPy の参照解は `cache/` にキャッシュされ、全条件で同じものを使う (NumPy は全イメージで同一バージョンに固定)。
 
 ## ディレクトリ構成
 
@@ -171,19 +199,27 @@ NumPy の参照解は `cache/` にキャッシュされ、全条件で同じも�
 ├── docker/
 │   ├── Dockerfile.cuda12      # CUDA 12.9.1 + CuPy (cupy-cuda12x)
 │   ├── Dockerfile.cuda13      # CUDA 13.4.2 + CuPy (cupy-cuda13x)
-│   └── requirements.txt       # NumPy / matplotlib (両イメージ共通で固定)
+│   ├── Dockerfile.cpu         # Ubuntu 24.04 + g++ 13 + Eigen 3.4 + CMake
+│   ├── requirements.txt       # NumPy / matplotlib (全イメージ共通で固定)
+│   └── requirements-cpu.txt   # + threadpoolctl (OpenBLAS のスレッド数制御)
 ├── docker-compose.yml
+├── cpp/
+│   ├── cpu_bench.cpp          # C++/Eigen の DGEMM / ADI / FTCS (サブコマンド)
+│   ├── npy.hpp                # 2D float64 .npy の読み書き
+│   └── CMakeLists.txt
 ├── src/
 │   ├── common.py              # 環境情報の収集、CUDA event タイマー
 │   ├── benchmark_dgemm.py     # DGEMM ベンチマーク
 │   ├── benchmark_pde.py       # 2D 熱方程式ベンチマーク (ADI-GEMM / FTCS ステンシル)
 │   ├── analyze_results.py     # 集計、PNG 出力、Markdown レポート生成
 │   ├── profile_dgemm.py       # nsys 用の DGEMM ドライバ (NVTX 範囲付き)
-│   └── summarize_nsys.py      # nsys のカーネル集計から実行経路を判定
+│   ├── summarize_nsys.py      # nsys のカーネル集計から実行経路を判定
+│   └── benchmark_cpu.py       # CPU ベースライン (C++/Eigen と NumPy) のオーケストレーション
 ├── scripts/
 │   └── conditions.sh          # 実験条件の定義 (run_benchmarks.sh / profile_kernels.sh が共有)
 ├── run_benchmarks.sh          # 全条件・全ベンチを一括実行
 ├── profile_kernels.sh         # nsys で実行カーネルを確認
+├── run_cpu_benchmarks.sh      # CPU ベースラインを一括実行
 ├── Makefile
 └── slides-jp/                 # 発表スライド
 ```
