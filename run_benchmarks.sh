@@ -63,7 +63,7 @@ for cond in ${CONDITIONS}; do
 done
 
 log "=== analysis ==="
-# shellcheck disable=SC2086
-run_in cuda13-native python src/analyze_results.py --results-dir "${RESULTS_DIR}" --conditions ${CONDITIONS}
+# Auto-discover conditions so that CPU results (run_cpu_benchmarks.sh) stay in the report.
+run_in cuda13-native python src/analyze_results.py --results-dir "${RESULTS_DIR}"
 
 log "done: ${RESULTS_DIR}/report.md"
