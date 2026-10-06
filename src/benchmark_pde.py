@@ -203,6 +203,22 @@ def cached_cpu_run(cache: Path | None, compute) -> tuple[np.ndarray, float | Non
     return u, elapsed
 
 
+def adi_exact(n: int, dt: float, steps: int) -> np.ndarray:
+    """Exact solution of the discrete ADI scheme after `steps` steps."""
+    g = {k: adi_amplification(n, k, dt) for k in {mm for kx, ky, _ in MODES for mm in (kx, ky)}}
+    return mode_superposition(n, {(kx, ky): (g[kx] * g[ky]) ** steps for kx, ky, _ in MODES})
+
+
+def ftcs_exact(n: int, r: float, steps: int) -> np.ndarray:
+    """Exact solution of the discrete FTCS scheme after `steps` steps."""
+    return mode_superposition(n, {(kx, ky): ftcs_amplification(n, kx, ky, r) ** steps for kx, ky, _ in MODES})
+
+
+def numpy_ref_cache_path(cache_dir: str, scheme: str, n: int, steps: int, dt: float) -> Path:
+    """Cache file of the NumPy reference run, shared by the GPU and CPU benchmarks."""
+    return Path(cache_dir) / f"pde_ref_{scheme}_n{n}_steps{steps}_{dt:.6g}_np{np.__version__}.npy"
+
+
 def run_case(scheme: str, n: int, args: argparse.Namespace) -> dict:
     u0 = initial_condition(n)
     h = grid_spacing(n)
@@ -212,8 +228,7 @@ def run_case(scheme: str, n: int, args: argparse.Namespace) -> dict:
         flops_per_step = 4.0 * n**3
         log(f"{scheme} n={n}: building propagator on CPU")
         m = adi_propagator(n, dt)
-        g = {k: adi_amplification(n, k, dt) for k in {mm for kx, ky, _ in MODES for mm in (kx, ky)}}
-        exact = mode_superposition(n, {(kx, ky): (g[kx] * g[ky]) ** steps for kx, ky, _ in MODES})
+        exact = adi_exact(n, dt, steps)
         gpu_run = lambda: run_adi_gpu(m, u0, steps, args.warmup, args.repeats)  # noqa: E731
         cpu_run = lambda: run_adi_cpu(m, u0, steps)  # noqa: E731
         extra = {"dt": dt, "courant_number_r": ALPHA * dt / h**2}
@@ -221,7 +236,7 @@ def run_case(scheme: str, n: int, args: argparse.Namespace) -> dict:
         steps, r = args.ftcs_steps, args.ftcs_r
         dt = r * h**2 / ALPHA
         flops_per_step = FTCS_FLOPS_PER_POINT * n**2
-        exact = mode_superposition(n, {(kx, ky): ftcs_amplification(n, kx, ky, r) ** steps for kx, ky, _ in MODES})
+        exact = ftcs_exact(n, r, steps)
         gpu_run = lambda: run_ftcs_gpu(u0, steps, r, args.warmup, args.repeats)  # noqa: E731
         cpu_run = lambda: run_ftcs_cpu(u0, steps, r)  # noqa: E731
         extra = {"dt": dt, "courant_number_r": r}
@@ -257,10 +272,7 @@ def run_case(scheme: str, n: int, args: argparse.Namespace) -> dict:
     record["discretization_err_vs_continuous"] = error_metrics(exact, continuous_solution(n, steps * dt))
 
     if n <= args.cpu_ref_max_n:
-        cache = None
-        if not args.no_cache:
-            tag = f"{scheme}_n{n}_steps{steps}_{extra['dt']:.6g}_np{np.__version__}"
-            cache = Path(args.cache_dir) / f"pde_ref_{tag}.npy"
+        cache = None if args.no_cache else numpy_ref_cache_path(args.cache_dir, scheme, n, steps, extra["dt"])
         log(f"{scheme} n={n}: NumPy reference ({'cached' if cache and cache.exists() else 'computing'})")
         u_cpu, cpu_time = cached_cpu_run(cache, cpu_run)
         record["cpu_time_s"] = cpu_time
