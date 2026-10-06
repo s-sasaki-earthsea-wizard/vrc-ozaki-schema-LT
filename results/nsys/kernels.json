@@ -1,0 +1,524 @@
+[
+  {
+    "condition": "cuda13-native",
+    "n": 512,
+    "phi": 0.5,
+    "gpu_time_per_dgemm_ms": 0.435648,
+    "path": "native FP64",
+    "share": {
+      "native-fp64": 1.0
+    },
+    "int8_mma_ms_per_dgemm": 0.0,
+    "kernel_count": 1,
+    "top_kernels": [
+      {
+        "name": "void cutlass::Kernel2<cutlass_80_tensorop_d884gemm_64x32_16x4_nn_align1>(T1::Params)",
+        "short": "cutlass::Kernel2<cutlass_80_tensorop_d884gemm_64x32_16x4_nn_align1,...",
+        "time_pct": 100.0
+      }
+    ]
+  },
+  {
+    "condition": "cuda13-emu",
+    "n": 512,
+    "phi": 0.5,
+    "gpu_time_per_dgemm_ms": 0.434315,
+    "path": "native FP64",
+    "share": {
+      "native-fp64": 1.0
+    },
+    "int8_mma_ms_per_dgemm": 0.0,
+    "kernel_count": 1,
+    "top_kernels": [
+      {
+        "name": "void cutlass::Kernel2<cutlass_80_tensorop_d884gemm_64x32_16x4_nn_align1>(T1::Params)",
+        "short": "cutlass::Kernel2<cutlass_80_tensorop_d884gemm_64x32_16x4_nn_align1,...",
+        "time_pct": 100.0
+      }
+    ]
+  },
+  {
+    "condition": "cuda13-emu-eager",
+    "n": 512,
+    "phi": 0.5,
+    "gpu_time_per_dgemm_ms": 0.17783366666666667,
+    "path": "Ozaki-II",
+    "share": {
+      "ozaki2": 0.7475993484548296,
+      "int8-mma": 0.1785038828418316,
+      "emulation-other": 0.04414612156303362,
+      "other": 0.029750647140305266
+    },
+    "int8_mma_ms_per_dgemm": 0.031744,
+    "kernel_count": 13,
+    "top_kernels": [
+      {
+        "name": "void prolog_mod_dfma<oz2_int8_dgemm, (int)256, (int)3, (int)8, (int)0, (int)1, (int)2, (int)3, (int)4, (int)5, (int)6, (int)7, (int)8, (int)9, (int)10, (int)11, (int)12, (int)13, (int)14, (int)15>(long, int, int, T1::Ts *, unsigned long, const T1::Tx *, long, long, const int *)",
+        "short": "prolog_mod_dfma<oz2_int8_dgemm,...>",
+        "time_pct": 34.5
+      },
+      {
+        "name": "void prolog_mod_dfma<oz2_int8_dgemm, (int)256, (int)3, (int)8, (int)16, (int)17, (int)18, (int)19, (int)20, (int)21, (int)22, (int)23, (int)24, (int)25, (int)26, (int)27, (int)28>(long, int, int, T1::Ts *, unsigned long, const T1::Tx *, long, long, const int *)",
+        "short": "prolog_mod_dfma<oz2_int8_dgemm,...>",
+        "time_pct": 28.7
+      },
+      {
+        "name": "nvjet_sm120_biu_mma_256x128x128_2_64x64x128_tmaAB_alignCD4_bz_dynbatch_smod_TNNN",
+        "short": "nvjet_sm120_biu_mma_256x128x128_2_64x64x128_tmaAB_alignCD4_bz_dynba...",
+        "time_pct": 17.9
+      },
+      {
+        "name": "void get_minmax_block_ker<(int)32, (int)4>(bool, bool, unsigned int, unsigned int, int, int, const_emu_batch<double>, unsigned int, int *, unsigned int, long, bool, int *, long, int *, unsigned int)",
+        "short": "get_minmax_block_ker<,...>",
+        "time_pct": 4.1
+      }
+    ]
+  },
+  {
+    "condition": "cuda13-native",
+    "n": 2048,
+    "phi": 0.5,
+    "gpu_time_per_dgemm_ms": 22.434033,
+    "path": "native FP64",
+    "share": {
+      "native-fp64": 1.0
+    },
+    "int8_mma_ms_per_dgemm": 0.0,
+    "kernel_count": 1,
+    "top_kernels": [
+      {
+        "name": "void cutlass::Kernel2<cutlass_80_tensorop_d884gemm_64x32_16x4_nn_align1>(T1::Params)",
+        "short": "cutlass::Kernel2<cutlass_80_tensorop_d884gemm_64x32_16x4_nn_align1,...",
+        "time_pct": 100.0
+      }
+    ]
+  },
+  {
+    "condition": "cuda13-emu",
+    "n": 2048,
+    "phi": 0.5,
+    "gpu_time_per_dgemm_ms": 2.6677343333333337,
+    "path": "Ozaki-II",
+    "share": {
+      "int8-mma": 0.30322672060173905,
+      "ozaki2": 0.6422070013718257,
+      "emulation-other": 0.03256308755382064,
+      "other": 0.022003190472614526
+    },
+    "int8_mma_ms_per_dgemm": 0.8089283333333334,
+    "kernel_count": 13,
+    "top_kernels": [
+      {
+        "name": "nvjet_sm120_biu_mma_256x128x128_2_64x64x128_tmaAB_alignCD4_bz_dynbatch_smod_TNNN",
+        "short": "nvjet_sm120_biu_mma_256x128x128_2_64x64x128_tmaAB_alignCD4_bz_dynba...",
+        "time_pct": 30.3
+      },
+      {
+        "name": "void prolog_mod_dfma<oz2_int8_dgemm, (int)256, (int)3, (int)8, (int)0, (int)1, (int)2, (int)3, (int)4, (int)5, (int)6, (int)7, (int)8, (int)9, (int)10, (int)11, (int)12, (int)13, (int)14, (int)15>(long, int, int, T1::Ts *, unsigned long, const T1::Tx *, long, long, const int *)",
+        "short": "prolog_mod_dfma<oz2_int8_dgemm,...>",
+        "time_pct": 29.4
+      },
+      {
+        "name": "void prolog_mod_dfma<oz2_int8_dgemm, (int)256, (int)3, (int)8, (int)16, (int)17, (int)18, (int)19, (int)20, (int)21, (int)22, (int)23, (int)24, (int)25, (int)26, (int)27, (int)28>(long, int, int, T1::Ts *, unsigned long, const T1::Tx *, long, long, const int *)",
+        "short": "prolog_mod_dfma<oz2_int8_dgemm,...>",
+        "time_pct": 24.7
+      },
+      {
+        "name": "void inverse_scaling_mrc_kernel<oz2_int8_dgemm, (int)64, (scale_mode_t)4, (bool)1, (bool)1, double, (unsigned int)0, (unsigned int)1, (unsigned int)2, (unsigned int)3, (unsigned int)4, (unsigned int)5, (unsigned int)6, (unsigned int)7, (unsigned int)8, (unsigned int)9, (unsigned int)10, (unsigned int)11, (unsigned int)12, (unsigned int)13, (unsigned int)14, (unsigned int)15, (unsigned int)16, (unsigned int)17, (unsigned int)18, (unsigned int)19, (unsigned int)20, (unsigned int)21, (unsigned int)22, (unsigned int)23, (unsigned int)24, (unsigned int)25, (unsigned int)26, (unsigned int)27, (unsigned int)28>(int, int, const int *, const T1::Tci *, int, unsigned long long, long long, oz2_batch_ptr<const T1::Tx>, long long, int, oz2_batch_ptr<T1::Tx>, long long, int, T6, T6, const T1::Tsf *, long long, const T1::Tsf *, long long)",
+        "short": "inverse_scaling_mrc_kernel<oz2_int8_dgemm,...>",
+        "time_pct": 3.7
+      }
+    ]
+  },
+  {
+    "condition": "cuda13-emu-eager",
+    "n": 2048,
+    "phi": 0.5,
+    "gpu_time_per_dgemm_ms": 2.6671226666666663,
+    "path": "Ozaki-II",
+    "share": {
+      "int8-mma": 0.3030761739742504,
+      "ozaki2": 0.6422211801781895,
+      "emulation-other": 0.03271440583660194,
+      "other": 0.021988240010958126
+    },
+    "int8_mma_ms_per_dgemm": 0.8083413333333334,
+    "kernel_count": 13,
+    "top_kernels": [
+      {
+        "name": "nvjet_sm120_biu_mma_256x128x128_2_64x64x128_tmaAB_alignCD4_bz_dynbatch_smod_TNNN",
+        "short": "nvjet_sm120_biu_mma_256x128x128_2_64x64x128_tmaAB_alignCD4_bz_dynba...",
+        "time_pct": 30.3
+      },
+      {
+        "name": "void prolog_mod_dfma<oz2_int8_dgemm, (int)256, (int)3, (int)8, (int)0, (int)1, (int)2, (int)3, (int)4, (int)5, (int)6, (int)7, (int)8, (int)9, (int)10, (int)11, (int)12, (int)13, (int)14, (int)15>(long, int, int, T1::Ts *, unsigned long, const T1::Tx *, long, long, const int *)",
+        "short": "prolog_mod_dfma<oz2_int8_dgemm,...>",
+        "time_pct": 29.4
+      },
+      {
+        "name": "void prolog_mod_dfma<oz2_int8_dgemm, (int)256, (int)3, (int)8, (int)16, (int)17, (int)18, (int)19, (int)20, (int)21, (int)22, (int)23, (int)24, (int)25, (int)26, (int)27, (int)28>(long, int, int, T1::Ts *, unsigned long, const T1::Tx *, long, long, const int *)",
+        "short": "prolog_mod_dfma<oz2_int8_dgemm,...>",
+        "time_pct": 24.7
+      },
+      {
+        "name": "void inverse_scaling_mrc_kernel<oz2_int8_dgemm, (int)64, (scale_mode_t)4, (bool)1, (bool)1, double, (unsigned int)0, (unsigned int)1, (unsigned int)2, (unsigned int)3, (unsigned int)4, (unsigned int)5, (unsigned int)6, (unsigned int)7, (unsigned int)8, (unsigned int)9, (unsigned int)10, (unsigned int)11, (unsigned int)12, (unsigned int)13, (unsigned int)14, (unsigned int)15, (unsigned int)16, (unsigned int)17, (unsigned int)18, (unsigned int)19, (unsigned int)20, (unsigned int)21, (unsigned int)22, (unsigned int)23, (unsigned int)24, (unsigned int)25, (unsigned int)26, (unsigned int)27, (unsigned int)28>(int, int, const int *, const T1::Tci *, int, unsigned long long, long long, oz2_batch_ptr<const T1::Tx>, long long, int, oz2_batch_ptr<T1::Tx>, long long, int, T6, T6, const T1::Tsf *, long long, const T1::Tsf *, long long)",
+        "short": "inverse_scaling_mrc_kernel<oz2_int8_dgemm,...>",
+        "time_pct": 3.7
+      }
+    ]
+  },
+  {
+    "condition": "cuda13-native",
+    "n": 8000,
+    "phi": 0.5,
+    "gpu_time_per_dgemm_ms": 1260.799078,
+    "path": "native FP64",
+    "share": {
+      "native-fp64": 1.0
+    },
+    "int8_mma_ms_per_dgemm": 0.0,
+    "kernel_count": 1,
+    "top_kernels": [
+      {
+        "name": "void cutlass::Kernel2<cutlass_80_tensorop_d884gemm_64x64_16x4_nn_align1>(T1::Params)",
+        "short": "cutlass::Kernel2<cutlass_80_tensorop_d884gemm_64x64_16x4_nn_align1,...",
+        "time_pct": 100.0
+      }
+    ]
+  },
+  {
+    "condition": "cuda13-emu",
+    "n": 8000,
+    "phi": 0.5,
+    "gpu_time_per_dgemm_ms": 71.739523,
+    "path": "Ozaki-II",
+    "share": {
+      "int8-mma": 0.5865721093982369,
+      "ozaki2": 0.37373302115023355,
+      "emulation-other": 0.016175109871676547,
+      "other": 0.023519759579852983
+    },
+    "int8_mma_ms_per_dgemm": 42.08040333333334,
+    "kernel_count": 13,
+    "top_kernels": [
+      {
+        "name": "nvjet_sm120_biu_mma_256x128x128_2_64x64x128_tmaAB_alignCD4_bz_dynbatch_smod_TNNN",
+        "short": "nvjet_sm120_biu_mma_256x128x128_2_64x64x128_tmaAB_alignCD4_bz_dynba...",
+        "time_pct": 58.7
+      },
+      {
+        "name": "void prolog_mod_dfma<oz2_int8_dgemm, (int)256, (int)3, (int)8, (int)0, (int)1, (int)2, (int)3, (int)4, (int)5, (int)6, (int)7, (int)8, (int)9, (int)10, (int)11, (int)12, (int)13, (int)14, (int)15>(long, int, int, T1::Ts *, unsigned long, const T1::Tx *, long, long, const int *)",
+        "short": "prolog_mod_dfma<oz2_int8_dgemm,...>",
+        "time_pct": 16.0
+      },
+      {
+        "name": "void prolog_mod_dfma<oz2_int8_dgemm, (int)256, (int)3, (int)8, (int)16, (int)17, (int)18, (int)19, (int)20, (int)21, (int)22, (int)23, (int)24, (int)25, (int)26, (int)27, (int)28>(long, int, int, T1::Ts *, unsigned long, const T1::Tx *, long, long, const int *)",
+        "short": "prolog_mod_dfma<oz2_int8_dgemm,...>",
+        "time_pct": 13.6
+      },
+      {
+        "name": "void inverse_scaling_mrc_kernel<oz2_int8_dgemm, (int)64, (scale_mode_t)4, (bool)1, (bool)1, double, (unsigned int)0, (unsigned int)1, (unsigned int)2, (unsigned int)3, (unsigned int)4, (unsigned int)5, (unsigned int)6, (unsigned int)7, (unsigned int)8, (unsigned int)9, (unsigned int)10, (unsigned int)11, (unsigned int)12, (unsigned int)13, (unsigned int)14, (unsigned int)15, (unsigned int)16, (unsigned int)17, (unsigned int)18, (unsigned int)19, (unsigned int)20, (unsigned int)21, (unsigned int)22, (unsigned int)23, (unsigned int)24, (unsigned int)25, (unsigned int)26, (unsigned int)27, (unsigned int)28>(int, int, const int *, const T1::Tci *, int, unsigned long long, long long, oz2_batch_ptr<const T1::Tx>, long long, int, oz2_batch_ptr<T1::Tx>, long long, int, T6, T6, const T1::Tsf *, long long, const T1::Tsf *, long long)",
+        "short": "inverse_scaling_mrc_kernel<oz2_int8_dgemm,...>",
+        "time_pct": 2.7
+      }
+    ]
+  },
+  {
+    "condition": "cuda13-emu-eager",
+    "n": 8000,
+    "phi": 0.5,
+    "gpu_time_per_dgemm_ms": 71.74665866666668,
+    "path": "Ozaki-II",
+    "share": {
+      "int8-mma": 0.5868710745442566,
+      "ozaki2": 0.37337456309695927,
+      "emulation-other": 0.01619950468680595,
+      "other": 0.023554857671978183
+    },
+    "int8_mma_ms_per_dgemm": 42.10603866666666,
+    "kernel_count": 13,
+    "top_kernels": [
+      {
+        "name": "nvjet_sm120_biu_mma_256x128x128_2_64x64x128_tmaAB_alignCD4_bz_dynbatch_smod_TNNN",
+        "short": "nvjet_sm120_biu_mma_256x128x128_2_64x64x128_tmaAB_alignCD4_bz_dynba...",
+        "time_pct": 58.7
+      },
+      {
+        "name": "void prolog_mod_dfma<oz2_int8_dgemm, (int)256, (int)3, (int)8, (int)0, (int)1, (int)2, (int)3, (int)4, (int)5, (int)6, (int)7, (int)8, (int)9, (int)10, (int)11, (int)12, (int)13, (int)14, (int)15>(long, int, int, T1::Ts *, unsigned long, const T1::Tx *, long, long, const int *)",
+        "short": "prolog_mod_dfma<oz2_int8_dgemm,...>",
+        "time_pct": 16.0
+      },
+      {
+        "name": "void prolog_mod_dfma<oz2_int8_dgemm, (int)256, (int)3, (int)8, (int)16, (int)17, (int)18, (int)19, (int)20, (int)21, (int)22, (int)23, (int)24, (int)25, (int)26, (int)27, (int)28>(long, int, int, T1::Ts *, unsigned long, const T1::Tx *, long, long, const int *)",
+        "short": "prolog_mod_dfma<oz2_int8_dgemm,...>",
+        "time_pct": 13.6
+      },
+      {
+        "name": "void inverse_scaling_mrc_kernel<oz2_int8_dgemm, (int)64, (scale_mode_t)4, (bool)1, (bool)1, double, (unsigned int)0, (unsigned int)1, (unsigned int)2, (unsigned int)3, (unsigned int)4, (unsigned int)5, (unsigned int)6, (unsigned int)7, (unsigned int)8, (unsigned int)9, (unsigned int)10, (unsigned int)11, (unsigned int)12, (unsigned int)13, (unsigned int)14, (unsigned int)15, (unsigned int)16, (unsigned int)17, (unsigned int)18, (unsigned int)19, (unsigned int)20, (unsigned int)21, (unsigned int)22, (unsigned int)23, (unsigned int)24, (unsigned int)25, (unsigned int)26, (unsigned int)27, (unsigned int)28>(int, int, const int *, const T1::Tci *, int, unsigned long long, long long, oz2_batch_ptr<const T1::Tx>, long long, int, oz2_batch_ptr<T1::Tx>, long long, int, T6, T6, const T1::Tsf *, long long, const T1::Tsf *, long long)",
+        "short": "inverse_scaling_mrc_kernel<oz2_int8_dgemm,...>",
+        "time_pct": 2.7
+      }
+    ]
+  },
+  {
+    "condition": "cuda13-native",
+    "n": 512,
+    "phi": 4.0,
+    "gpu_time_per_dgemm_ms": 0.435595,
+    "path": "native FP64",
+    "share": {
+      "native-fp64": 1.0
+    },
+    "int8_mma_ms_per_dgemm": 0.0,
+    "kernel_count": 1,
+    "top_kernels": [
+      {
+        "name": "void cutlass::Kernel2<cutlass_80_tensorop_d884gemm_64x32_16x4_nn_align1>(T1::Params)",
+        "short": "cutlass::Kernel2<cutlass_80_tensorop_d884gemm_64x32_16x4_nn_align1,...",
+        "time_pct": 100.0
+      }
+    ]
+  },
+  {
+    "condition": "cuda13-emu",
+    "n": 512,
+    "phi": 4.0,
+    "gpu_time_per_dgemm_ms": 0.434208,
+    "path": "native FP64",
+    "share": {
+      "native-fp64": 1.0
+    },
+    "int8_mma_ms_per_dgemm": 0.0,
+    "kernel_count": 1,
+    "top_kernels": [
+      {
+        "name": "void cutlass::Kernel2<cutlass_80_tensorop_d884gemm_64x32_16x4_nn_align1>(T1::Params)",
+        "short": "cutlass::Kernel2<cutlass_80_tensorop_d884gemm_64x32_16x4_nn_align1,...",
+        "time_pct": 100.0
+      }
+    ]
+  },
+  {
+    "condition": "cuda13-emu-eager",
+    "n": 512,
+    "phi": 4.0,
+    "gpu_time_per_dgemm_ms": 0.19278933333333334,
+    "path": "Ozaki-II",
+    "share": {
+      "ozaki2": 0.7156689166758881,
+      "int8-mma": 0.21622219763195752,
+      "emulation-other": 0.040721478366714615,
+      "other": 0.027387407325439858
+    },
+    "int8_mma_ms_per_dgemm": 0.04168533333333334,
+    "kernel_count": 13,
+    "top_kernels": [
+      {
+        "name": "void prolog_mod_dfma<oz2_int8_dgemm, (int)256, (int)3, (int)8, (int)0, (int)1, (int)2, (int)3, (int)4, (int)5, (int)6, (int)7, (int)8, (int)9, (int)10, (int)11, (int)12, (int)13, (int)14, (int)15>(long, int, int, T1::Ts *, unsigned long, const T1::Tx *, long, long, const int *)",
+        "short": "prolog_mod_dfma<oz2_int8_dgemm,...>",
+        "time_pct": 31.9
+      },
+      {
+        "name": "void prolog_mod_dfma<oz2_int8_dgemm, (int)256, (int)3, (int)8, (int)16, (int)17, (int)18, (int)19, (int)20, (int)21, (int)22, (int)23, (int)24, (int)25, (int)26, (int)27, (int)28>(long, int, int, T1::Ts *, unsigned long, const T1::Tx *, long, long, const int *)",
+        "short": "prolog_mod_dfma<oz2_int8_dgemm,...>",
+        "time_pct": 27.8
+      },
+      {
+        "name": "nvjet_sm120_biu_mma_256x128x128_2_64x64x128_tmaAB_alignCD4_bz_dynbatch_smod_TNNN",
+        "short": "nvjet_sm120_biu_mma_256x128x128_2_64x64x128_tmaAB_alignCD4_bz_dynba...",
+        "time_pct": 21.6
+      },
+      {
+        "name": "void inverse_scaling_mrc_kernel<oz2_int8_dgemm, (int)64, (scale_mode_t)4, (bool)1, (bool)1, double, (unsigned int)0, (unsigned int)1, (unsigned int)2, (unsigned int)3, (unsigned int)4, (unsigned int)5, (unsigned int)6, (unsigned int)7, (unsigned int)8, (unsigned int)9, (unsigned int)10, (unsigned int)11, (unsigned int)12, (unsigned int)13, (unsigned int)14, (unsigned int)15, (unsigned int)16, (unsigned int)17, (unsigned int)18, (unsigned int)19, (unsigned int)20, (unsigned int)21, (unsigned int)22, (unsigned int)23, (unsigned int)24, (unsigned int)25, (unsigned int)26, (unsigned int)27, (unsigned int)28>(int, int, const int *, const T1::Tci *, int, unsigned long long, long long, oz2_batch_ptr<const T1::Tx>, long long, int, oz2_batch_ptr<T1::Tx>, long long, int, T6, T6, const T1::Tsf *, long long, const T1::Tsf *, long long)",
+        "short": "inverse_scaling_mrc_kernel<oz2_int8_dgemm,...>",
+        "time_pct": 4.1
+      }
+    ]
+  },
+  {
+    "condition": "cuda13-native",
+    "n": 2048,
+    "phi": 4.0,
+    "gpu_time_per_dgemm_ms": 22.431857,
+    "path": "native FP64",
+    "share": {
+      "native-fp64": 1.0
+    },
+    "int8_mma_ms_per_dgemm": 0.0,
+    "kernel_count": 1,
+    "top_kernels": [
+      {
+        "name": "void cutlass::Kernel2<cutlass_80_tensorop_d884gemm_64x32_16x4_nn_align1>(T1::Params)",
+        "short": "cutlass::Kernel2<cutlass_80_tensorop_d884gemm_64x32_16x4_nn_align1,...",
+        "time_pct": 100.0
+      }
+    ]
+  },
+  {
+    "condition": "cuda13-emu",
+    "n": 2048,
+    "phi": 4.0,
+    "gpu_time_per_dgemm_ms": 3.1801483333333334,
+    "path": "Ozaki-II",
+    "share": {
+      "int8-mma": 0.39600333108151664,
+      "ozaki2": 0.5580013301266346,
+      "emulation-other": 0.027480479160039182,
+      "other": 0.018514859631809627
+    },
+    "int8_mma_ms_per_dgemm": 1.2593493333333332,
+    "kernel_count": 13,
+    "top_kernels": [
+      {
+        "name": "nvjet_sm120_biu_mma_256x128x128_2_64x64x128_tmaAB_alignCD4_bz_dynbatch_smod_TNNN",
+        "short": "nvjet_sm120_biu_mma_256x128x128_2_64x64x128_tmaAB_alignCD4_bz_dynba...",
+        "time_pct": 39.6
+      },
+      {
+        "name": "void prolog_mod_dfma<oz2_int8_dgemm, (int)256, (int)3, (int)8, (int)0, (int)1, (int)2, (int)3, (int)4, (int)5, (int)6, (int)7, (int)8, (int)9, (int)10, (int)11, (int)12, (int)13, (int)14, (int)15>(long, int, int, T1::Ts *, unsigned long, const T1::Tx *, long, long, const int *)",
+        "short": "prolog_mod_dfma<oz2_int8_dgemm,...>",
+        "time_pct": 24.7
+      },
+      {
+        "name": "void prolog_mod_dfma<oz2_int8_dgemm, (int)256, (int)3, (int)8, (int)16, (int)17, (int)18, (int)19, (int)20, (int)21, (int)22, (int)23, (int)24, (int)25, (int)26, (int)27, (int)28>(long, int, int, T1::Ts *, unsigned long, const T1::Tx *, long, long, const int *)",
+        "short": "prolog_mod_dfma<oz2_int8_dgemm,...>",
+        "time_pct": 21.3
+      },
+      {
+        "name": "void inverse_scaling_mrc_kernel<oz2_int8_dgemm, (int)64, (scale_mode_t)4, (bool)1, (bool)1, double, (unsigned int)0, (unsigned int)1, (unsigned int)2, (unsigned int)3, (unsigned int)4, (unsigned int)5, (unsigned int)6, (unsigned int)7, (unsigned int)8, (unsigned int)9, (unsigned int)10, (unsigned int)11, (unsigned int)12, (unsigned int)13, (unsigned int)14, (unsigned int)15, (unsigned int)16, (unsigned int)17, (unsigned int)18, (unsigned int)19, (unsigned int)20, (unsigned int)21, (unsigned int)22, (unsigned int)23, (unsigned int)24, (unsigned int)25, (unsigned int)26, (unsigned int)27, (unsigned int)28>(int, int, const int *, const T1::Tci *, int, unsigned long long, long long, oz2_batch_ptr<const T1::Tx>, long long, int, oz2_batch_ptr<T1::Tx>, long long, int, T6, T6, const T1::Tsf *, long long, const T1::Tsf *, long long)",
+        "short": "inverse_scaling_mrc_kernel<oz2_int8_dgemm,...>",
+        "time_pct": 4.5
+      }
+    ]
+  },
+  {
+    "condition": "cuda13-emu-eager",
+    "n": 2048,
+    "phi": 4.0,
+    "gpu_time_per_dgemm_ms": 3.179345,
+    "path": "Ozaki-II",
+    "share": {
+      "int8-mma": 0.3960493959185514,
+      "ozaki2": 0.5579706931249466,
+      "emulation-other": 0.027490777712600133,
+      "other": 0.018489133243901914
+    },
+    "int8_mma_ms_per_dgemm": 1.2591776666666668,
+    "kernel_count": 13,
+    "top_kernels": [
+      {
+        "name": "nvjet_sm120_biu_mma_256x128x128_2_64x64x128_tmaAB_alignCD4_bz_dynbatch_smod_TNNN",
+        "short": "nvjet_sm120_biu_mma_256x128x128_2_64x64x128_tmaAB_alignCD4_bz_dynba...",
+        "time_pct": 39.6
+      },
+      {
+        "name": "void prolog_mod_dfma<oz2_int8_dgemm, (int)256, (int)3, (int)8, (int)0, (int)1, (int)2, (int)3, (int)4, (int)5, (int)6, (int)7, (int)8, (int)9, (int)10, (int)11, (int)12, (int)13, (int)14, (int)15>(long, int, int, T1::Ts *, unsigned long, const T1::Tx *, long, long, const int *)",
+        "short": "prolog_mod_dfma<oz2_int8_dgemm,...>",
+        "time_pct": 24.6
+      },
+      {
+        "name": "void prolog_mod_dfma<oz2_int8_dgemm, (int)256, (int)3, (int)8, (int)16, (int)17, (int)18, (int)19, (int)20, (int)21, (int)22, (int)23, (int)24, (int)25, (int)26, (int)27, (int)28>(long, int, int, T1::Ts *, unsigned long, const T1::Tx *, long, long, const int *)",
+        "short": "prolog_mod_dfma<oz2_int8_dgemm,...>",
+        "time_pct": 21.3
+      },
+      {
+        "name": "void inverse_scaling_mrc_kernel<oz2_int8_dgemm, (int)64, (scale_mode_t)4, (bool)1, (bool)1, double, (unsigned int)0, (unsigned int)1, (unsigned int)2, (unsigned int)3, (unsigned int)4, (unsigned int)5, (unsigned int)6, (unsigned int)7, (unsigned int)8, (unsigned int)9, (unsigned int)10, (unsigned int)11, (unsigned int)12, (unsigned int)13, (unsigned int)14, (unsigned int)15, (unsigned int)16, (unsigned int)17, (unsigned int)18, (unsigned int)19, (unsigned int)20, (unsigned int)21, (unsigned int)22, (unsigned int)23, (unsigned int)24, (unsigned int)25, (unsigned int)26, (unsigned int)27, (unsigned int)28>(int, int, const int *, const T1::Tci *, int, unsigned long long, long long, oz2_batch_ptr<const T1::Tx>, long long, int, oz2_batch_ptr<T1::Tx>, long long, int, T6, T6, const T1::Tsf *, long long, const T1::Tsf *, long long)",
+        "short": "inverse_scaling_mrc_kernel<oz2_int8_dgemm,...>",
+        "time_pct": 4.5
+      }
+    ]
+  },
+  {
+    "condition": "cuda13-native",
+    "n": 8000,
+    "phi": 4.0,
+    "gpu_time_per_dgemm_ms": 1260.5653653333331,
+    "path": "native FP64",
+    "share": {
+      "native-fp64": 1.0
+    },
+    "int8_mma_ms_per_dgemm": 0.0,
+    "kernel_count": 1,
+    "top_kernels": [
+      {
+        "name": "void cutlass::Kernel2<cutlass_80_tensorop_d884gemm_64x64_16x4_nn_align1>(T1::Params)",
+        "short": "cutlass::Kernel2<cutlass_80_tensorop_d884gemm_64x64_16x4_nn_align1,...",
+        "time_pct": 100.0
+      }
+    ]
+  },
+  {
+    "condition": "cuda13-emu",
+    "n": 8000,
+    "phi": 4.0,
+    "gpu_time_per_dgemm_ms": 98.65115766666668,
+    "path": "Ozaki-II",
+    "share": {
+      "int8-mma": 0.6886280567486363,
+      "ozaki2": 0.28238469767847596,
+      "emulation-other": 0.011755351152780693,
+      "other": 0.01723189442010704
+    },
+    "int8_mma_ms_per_dgemm": 67.933955,
+    "kernel_count": 13,
+    "top_kernels": [
+      {
+        "name": "nvjet_sm120_biu_mma_256x128x128_2_64x64x128_tmaAB_alignCD4_bz_dynbatch_smod_TNNN",
+        "short": "nvjet_sm120_biu_mma_256x128x128_2_64x64x128_tmaAB_alignCD4_bz_dynba...",
+        "time_pct": 68.9
+      },
+      {
+        "name": "void prolog_mod_dfma<oz2_int8_dgemm, (int)256, (int)3, (int)8, (int)0, (int)1, (int)2, (int)3, (int)4, (int)5, (int)6, (int)7, (int)8, (int)9, (int)10, (int)11, (int)12, (int)13, (int)14, (int)15>(long, int, int, T1::Ts *, unsigned long, const T1::Tx *, long, long, const int *)",
+        "short": "prolog_mod_dfma<oz2_int8_dgemm,...>",
+        "time_pct": 11.6
+      },
+      {
+        "name": "void prolog_mod_dfma<oz2_int8_dgemm, (int)256, (int)3, (int)8, (int)16, (int)17, (int)18, (int)19, (int)20, (int)21, (int)22, (int)23, (int)24, (int)25, (int)26, (int)27, (int)28>(long, int, int, T1::Ts *, unsigned long, const T1::Tx *, long, long, const int *)",
+        "short": "prolog_mod_dfma<oz2_int8_dgemm,...>",
+        "time_pct": 10.1
+      },
+      {
+        "name": "void inverse_scaling_mrc_kernel<oz2_int8_dgemm, (int)64, (scale_mode_t)4, (bool)1, (bool)1, double, (unsigned int)0, (unsigned int)1, (unsigned int)2, (unsigned int)3, (unsigned int)4, (unsigned int)5, (unsigned int)6, (unsigned int)7, (unsigned int)8, (unsigned int)9, (unsigned int)10, (unsigned int)11, (unsigned int)12, (unsigned int)13, (unsigned int)14, (unsigned int)15, (unsigned int)16, (unsigned int)17, (unsigned int)18, (unsigned int)19, (unsigned int)20, (unsigned int)21, (unsigned int)22, (unsigned int)23, (unsigned int)24, (unsigned int)25, (unsigned int)26, (unsigned int)27, (unsigned int)28>(int, int, const int *, const T1::Tci *, int, unsigned long long, long long, oz2_batch_ptr<const T1::Tx>, long long, int, oz2_batch_ptr<T1::Tx>, long long, int, T6, T6, const T1::Tsf *, long long, const T1::Tsf *, long long)",
+        "short": "inverse_scaling_mrc_kernel<oz2_int8_dgemm,...>",
+        "time_pct": 2.8
+      }
+    ]
+  },
+  {
+    "condition": "cuda13-emu-eager",
+    "n": 8000,
+    "phi": 4.0,
+    "gpu_time_per_dgemm_ms": 98.46107266666667,
+    "path": "Ozaki-II",
+    "share": {
+      "int8-mma": 0.6879973323332134,
+      "ozaki2": 0.28293802730526146,
+      "emulation-other": 0.011793537302447562,
+      "other": 0.01727110305907765
+    },
+    "int8_mma_ms_per_dgemm": 67.74095533333333,
+    "kernel_count": 13,
+    "top_kernels": [
+      {
+        "name": "nvjet_sm120_biu_mma_256x128x128_2_64x64x128_tmaAB_alignCD4_bz_dynbatch_smod_TNNN",
+        "short": "nvjet_sm120_biu_mma_256x128x128_2_64x64x128_tmaAB_alignCD4_bz_dynba...",
+        "time_pct": 68.8
+      },
+      {
+        "name": "void prolog_mod_dfma<oz2_int8_dgemm, (int)256, (int)3, (int)8, (int)0, (int)1, (int)2, (int)3, (int)4, (int)5, (int)6, (int)7, (int)8, (int)9, (int)10, (int)11, (int)12, (int)13, (int)14, (int)15>(long, int, int, T1::Ts *, unsigned long, const T1::Tx *, long, long, const int *)",
+        "short": "prolog_mod_dfma<oz2_int8_dgemm,...>",
+        "time_pct": 11.7
+      },
+      {
+        "name": "void prolog_mod_dfma<oz2_int8_dgemm, (int)256, (int)3, (int)8, (int)16, (int)17, (int)18, (int)19, (int)20, (int)21, (int)22, (int)23, (int)24, (int)25, (int)26, (int)27, (int)28>(long, int, int, T1::Ts *, unsigned long, const T1::Tx *, long, long, const int *)",
+        "short": "prolog_mod_dfma<oz2_int8_dgemm,...>",
+        "time_pct": 10.1
+      },
+      {
+        "name": "void inverse_scaling_mrc_kernel<oz2_int8_dgemm, (int)64, (scale_mode_t)4, (bool)1, (bool)1, double, (unsigned int)0, (unsigned int)1, (unsigned int)2, (unsigned int)3, (unsigned int)4, (unsigned int)5, (unsigned int)6, (unsigned int)7, (unsigned int)8, (unsigned int)9, (unsigned int)10, (unsigned int)11, (unsigned int)12, (unsigned int)13, (unsigned int)14, (unsigned int)15, (unsigned int)16, (unsigned int)17, (unsigned int)18, (unsigned int)19, (unsigned int)20, (unsigned int)21, (unsigned int)22, (unsigned int)23, (unsigned int)24, (unsigned int)25, (unsigned int)26, (unsigned int)27, (unsigned int)28>(int, int, const int *, const T1::Tci *, int, unsigned long long, long long, oz2_batch_ptr<const T1::Tx>, long long, int, oz2_batch_ptr<T1::Tx>, long long, int, T6, T6, const T1::Tsf *, long long, const T1::Tsf *, long long)",
+        "short": "inverse_scaling_mrc_kernel<oz2_int8_dgemm,...>",
+        "time_pct": 2.8
+      }
+    ]
+  }
+]

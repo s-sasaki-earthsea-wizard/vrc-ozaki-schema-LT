@@ -1,0 +1,3 @@
+# Pinned so that the CPU (NumPy/OpenBLAS) reference is identical in both images.
+numpy==2.2.6
+matplotlib==3.10.3

@@ -1,0 +1,342 @@
+{
+  "benchmark": "pde",
+  "condition": "cuda12",
+  "env": {
+    "condition": "cuda12",
+    "timestamp": "2026-10-05T16:57:20.756406+00:00",
+    "hostname": "220b95c19418",
+    "python": "3.10.12",
+    "numpy": "2.2.6",
+    "numpy_blas": {
+      "name": "scipy-openblas",
+      "found": true,
+      "version": "0.3.29",
+      "detection method": "pkgconfig",
+      "include directory": "/opt/_internal/cpython-3.10.15/lib/python3.10/site-packages/scipy_openblas64/include",
+      "lib directory": "/opt/_internal/cpython-3.10.15/lib/python3.10/site-packages/scipy_openblas64/lib",
+      "openblas configuration": "OpenBLAS 0.3.29  USE64BITINT DYNAMIC_ARCH NO_AFFINITY Haswell MAX_THREADS=64",
+      "pc file directory": "/project/.openblas"
+    },
+    "cupy": "14.2.0",
+    "cuda_runtime": "12.9",
+    "cuda_toolkit": "12.9.1",
+    "cuda_driver_api": "13.1",
+    "cublas_version": 120901,
+    "libcublas_loaded": [
+      "/usr/local/cuda-12.9/targets/x86_64-linux/lib/libcublas.so.12.9.1.4",
+      "/usr/local/cuda-12.9/targets/x86_64-linux/lib/libcublasLt.so.12.9.1.4"
+    ],
+    "libcuda_loaded": [
+      "/usr/lib/x86_64-linux-gnu/libcuda.so.590.48.01"
+    ],
+    "gpu_name": "NVIDIA GeForce RTX 5080",
+    "compute_capability": "12.0",
+    "gpu_memory_gib": 15.47,
+    "nvidia_smi": {
+      "name": "NVIDIA GeForce RTX 5080",
+      "driver_version": "590.48.01",
+      "clocks.sm": "532 MHz",
+      "clocks.max.sm": "3090 MHz",
+      "clocks.mem": "14801 MHz",
+      "temperature.gpu": "41",
+      "power.draw": "22.58 W",
+      "power.limit": "360.00 W",
+      "persistence_mode": "Disabled"
+    },
+    "emulation_env": {
+      "CUBLAS_EMULATE_DOUBLE_PRECISION": null,
+      "CUBLAS_EMULATION_STRATEGY": null,
+      "CUBLAS_FIXEDPOINT_EMULATION_MANTISSA_BIT_COUNT": null,
+      "CUBLAS_EMULATION_SPECIAL_VALUES_SUPPORT_MASK": null
+    },
+    "cpu_count": 16
+  },
+  "config": {
+    "sizes": [
+      1024,
+      2048,
+      4096,
+      8192
+    ],
+    "schemes": [
+      "adi-gemm",
+      "ftcs-stencil"
+    ],
+    "adi_steps": 20,
+    "adi_dt": 0.0001,
+    "ftcs_steps": 1000,
+    "ftcs_r": 0.2,
+    "warmup": 1,
+    "repeats": 3,
+    "cpu_ref_max_n": 2048,
+    "cache_dir": "cache",
+    "no_cache": false,
+    "output": "results/cuda12/pde.json"
+  },
+  "results": [
+    {
+      "scheme": "adi-gemm",
+      "n": 1024,
+      "steps": 20,
+      "flops_per_step": 4294967296.0,
+      "dt": 0.0001,
+      "courant_number_r": 105.0625,
+      "status": "ok",
+      "times_s": [
+        0.12032061004638672,
+        0.12041785430908203,
+        0.12069990539550782
+      ],
+      "median_s": 0.12041785430908203,
+      "min_s": 0.12032061004638672,
+      "max_s": 0.12069990539550782,
+      "std_s": 0.00019700855474065698,
+      "time_per_step_s": 0.006020892715454101,
+      "tflops": 0.7133439340275755,
+      "vs_discrete_exact": {
+        "max_abs_err": 2.90878432451791e-14,
+        "max_rel_err": 2.471749935464051e-14
+      },
+      "discretization_err_vs_continuous": {
+        "max_abs_err": 6.35809996707426e-06,
+        "max_rel_err": 5.402827061537942e-06
+      },
+      "cpu_time_s": 0.9581001363694668,
+      "vs_numpy": {
+        "max_abs_err": 3.552713678800501e-14,
+        "max_rel_err": 3.018931218887374e-14
+      },
+      "numpy_vs_discrete_exact": {
+        "max_abs_err": 1.7985612998927536e-14,
+        "max_rel_err": 1.5283339295617414e-14
+      }
+    },
+    {
+      "scheme": "adi-gemm",
+      "n": 2048,
+      "steps": 20,
+      "flops_per_step": 34359738368.0,
+      "dt": 0.0001,
+      "courant_number_r": 419.8401,
+      "status": "ok",
+      "times_s": [
+        0.860153564453125,
+        0.860152099609375,
+        0.8602940673828126
+      ],
+      "median_s": 0.860153564453125,
+      "min_s": 0.860152099609375,
+      "max_s": 0.8602940673828126,
+      "std_s": 8.154555752545685e-05,
+      "time_per_step_s": 0.04300767822265625,
+      "tflops": 0.7989210249880322,
+      "vs_discrete_exact": {
+        "max_abs_err": 7.105427357601002e-14,
+        "max_rel_err": 6.037846405252114e-14
+      },
+      "discretization_err_vs_continuous": {
+        "max_abs_err": 8.256589776767242e-06,
+        "max_rel_err": 7.016057299197501e-06
+      },
+      "cpu_time_s": 5.0006632078439,
+      "vs_numpy": {
+        "max_abs_err": 6.727951529228449e-14,
+        "max_rel_err": 5.71708581497312e-14
+      },
+      "numpy_vs_discrete_exact": {
+        "max_abs_err": 1.7985612998927536e-14,
+        "max_rel_err": 1.5283298713294416e-14
+      }
+    },
+    {
+      "scheme": "adi-gemm",
+      "n": 4096,
+      "steps": 20,
+      "flops_per_step": 274877906944.0,
+      "dt": 0.0001,
+      "courant_number_r": 1678.5409,
+      "status": "ok",
+      "times_s": [
+        6.74282958984375,
+        6.7422802734375,
+        6.7430625
+      ],
+      "median_s": 6.74282958984375,
+      "min_s": 6.7422802734375,
+      "max_s": 6.7430625,
+      "std_s": 0.00040163707708563257,
+      "time_per_step_s": 0.33714147949218753,
+      "tflops": 0.8153191572808817,
+      "vs_discrete_exact": {
+        "max_abs_err": 1.3389289676979388e-13,
+        "max_rel_err": 1.137756735047312e-13
+      },
+      "discretization_err_vs_continuous": {
+        "max_abs_err": 8.731793149752143e-06,
+        "max_rel_err": 7.419862327495155e-06
+      }
+    },
+    {
+      "scheme": "adi-gemm",
+      "n": 8192,
+      "steps": 20,
+      "flops_per_step": 2199023255552.0,
+      "dt": 0.0001,
+      "courant_number_r": 6712.5249,
+      "status": "ok",
+      "times_s": [
+        53.84448046875,
+        53.8953515625,
+        53.744328125
+      ],
+      "median_s": 53.84448046875,
+      "min_s": 53.744328125,
+      "max_s": 53.8953515625,
+      "std_s": 0.07684013579314426,
+      "time_per_step_s": 2.6922240234375,
+      "tflops": 0.816805450218155,
+      "vs_discrete_exact": {
+        "max_abs_err": 2.333688797762079e-13,
+        "max_rel_err": 1.9830549894214653e-13
+      },
+      "discretization_err_vs_continuous": {
+        "max_abs_err": 8.850681849748021e-06,
+        "max_rel_err": 7.520887053086814e-06
+      }
+    },
+    {
+      "scheme": "ftcs-stencil",
+      "n": 1024,
+      "steps": 1000,
+      "flops_per_step": 7340032.0,
+      "dt": 1.903628792385485e-07,
+      "courant_number_r": 0.2,
+      "status": "ok",
+      "times_s": [
+        0.01649580764770508,
+        0.016403135299682618,
+        0.016397279739379884
+      ],
+      "median_s": 0.016403135299682618,
+      "min_s": 0.016397279739379884,
+      "max_s": 0.01649580764770508,
+      "std_s": 5.5272356552790346e-05,
+      "time_per_step_s": 1.640313529968262e-05,
+      "tflops": 0.44747737953134004,
+      "effective_bandwidth_gbs": 1022.8054389287771,
+      "vs_discrete_exact": {
+        "max_abs_err": 4.440892098500626e-14,
+        "max_rel_err": 3.3167472630358946e-14
+      },
+      "discretization_err_vs_continuous": {
+        "max_abs_err": 1.1972141191751717e-06,
+        "max_rel_err": 8.94157245302622e-07
+      },
+      "cpu_time_s": 9.71583334542811,
+      "vs_numpy": {
+        "max_abs_err": 2.220446049250313e-16,
+        "max_rel_err": 1.658373631517961e-16
+      },
+      "numpy_vs_discrete_exact": {
+        "max_abs_err": 4.440892098500626e-14,
+        "max_rel_err": 3.3167472630358946e-14
+      }
+    },
+    {
+      "scheme": "ftcs-stencil",
+      "n": 2048,
+      "steps": 1000,
+      "flops_per_step": 29360128.0,
+      "dt": 4.763718377544213e-08,
+      "courant_number_r": 0.2,
+      "status": "ok",
+      "times_s": [
+        0.057447296142578125,
+        0.05742812728881836,
+        0.057422016143798826
+      ],
+      "median_s": 0.05742812728881836,
+      "min_s": 0.057422016143798826,
+      "max_s": 0.057447296142578125,
+      "std_s": 1.3190080781875037e-05,
+      "time_per_step_s": 5.742812728881836e-05,
+      "tflops": 0.5112499638433554,
+      "effective_bandwidth_gbs": 1168.5713459276694,
+      "vs_discrete_exact": {
+        "max_abs_err": 1.887379141862766e-14,
+        "max_rel_err": 1.3905752470327843e-14
+      },
+      "discretization_err_vs_continuous": {
+        "max_abs_err": 8.399919870782924e-08,
+        "max_rel_err": 6.188857452522898e-08
+      },
+      "cpu_time_s": 39.64961844496429,
+      "vs_numpy": {
+        "max_abs_err": 2.220446049250313e-16,
+        "max_rel_err": 1.6359708788620923e-16
+      },
+      "numpy_vs_discrete_exact": {
+        "max_abs_err": 1.887379141862766e-14,
+        "max_rel_err": 1.3905752470327843e-14
+      }
+    },
+    {
+      "scheme": "ftcs-stencil",
+      "n": 4096,
+      "steps": 1000,
+      "flops_per_step": 117440512.0,
+      "dt": 1.1915110319921308e-08,
+      "courant_number_r": 0.2,
+      "status": "ok",
+      "times_s": [
+        0.3307786865234375,
+        0.3307620544433594,
+        0.3307265625
+      ],
+      "median_s": 0.3307620544433594,
+      "min_s": 0.3307265625,
+      "max_s": 0.3307786865234375,
+      "std_s": 2.662460625832831e-05,
+      "time_per_step_s": 0.0003307620544433594,
+      "tflops": 0.35506041404187383,
+      "effective_bandwidth_gbs": 811.5666606671401,
+      "vs_discrete_exact": {
+        "max_abs_err": 5.284661597215745e-14,
+        "max_rel_err": 3.879835430520328e-14
+      },
+      "discretization_err_vs_continuous": {
+        "max_abs_err": 5.407860048656232e-09,
+        "max_rel_err": 3.970283926979682e-09
+      }
+    },
+    {
+      "scheme": "ftcs-stencil",
+      "n": 8192,
+      "steps": 1000,
+      "flops_per_step": 469762048.0,
+      "dt": 2.9795047762131954e-09,
+      "courant_number_r": 0.2,
+      "status": "ok",
+      "times_s": [
+        1.32433251953125,
+        1.3243046875,
+        1.32427880859375
+      ],
+      "median_s": 1.3243046875,
+      "min_s": 1.32427880859375,
+      "max_s": 1.32433251953125,
+      "std_s": 2.686138665859891e-05,
+      "time_per_step_s": 0.0013243046875,
+      "tflops": 0.3547235409147489,
+      "effective_bandwidth_gbs": 810.7966649479976,
+      "vs_discrete_exact": {
+        "max_abs_err": 2.3314683517128287e-14,
+        "max_rel_err": 1.7101589501143863e-14
+      },
+      "discretization_err_vs_continuous": {
+        "max_abs_err": 3.40585448732611e-10,
+        "max_rel_err": 2.4982335829843013e-10
+      }
+    }
+  ]
+}
