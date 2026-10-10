@@ -3,6 +3,8 @@
 #   cuda13 (EMU=0): CUDA 13.4, native DGEMM                     (isolates library/version effects)
 #   cuda13 (EMU=1): CUDA 13.4, cuBLAS FP64 emulation (Ozaki)    (target)
 #   cpu           : C++/Eigen and NumPy (OpenBLAS) on the host CPU (CPU baseline)
+#   fortran       : cuda13 + gfortran/OpenBLAS; plain Fortran DGEMM on OpenBLAS or,
+#                   via NVBLAS (LD_PRELOAD), on cuBLAS with or without emulation
 # The emulation switch is passed per run by run_benchmarks.sh via `-e`.
 
 x-workspace: &workspace
@@ -50,6 +52,17 @@ services:
       # toolkit refuse to start on an R580/R590 driver. CUDA 13.x minor-version
       # compatibility lets 13.4 user-space libraries run on driver >= 580, so we
       # skip the check by default. Set to "false" once the host driver is R615+.
+      NVIDIA_DISABLE_REQUIRE: ${NVIDIA_DISABLE_REQUIRE:-true}
+
+  fortran:
+    <<: *bench-common
+    image: vrc-ozaki/fortran:latest
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.fortran
+    environment:
+      HOME: /tmp
+      # Same reason as the cuda13 service (13.4 user-space libraries on an R580/R590 driver).
       NVIDIA_DISABLE_REQUIRE: ${NVIDIA_DISABLE_REQUIRE:-true}
 
   cpu:

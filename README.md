@@ -136,6 +136,37 @@ SIZES="512 2048 8000" PHIS="0.5 4" ./profile_kernels.sh   # -> results/nsys/kern
 入力の指数レンジ φ を変えた DGEMM 比較は `make phi-sweep` (`results-phi/`)。
 φ=0 は一様乱数 `U(-0.5, 0.5)`、φ=4 では要素の大きさが `exp(±4σ)` 程度に広がる。
 
+### Fortran の既存バイナリ + NVBLAS (drop-in)
+
+「既存の Fortran コードを書き換えずに Ozaki の恩恵を受けられるか」を確かめる追加実験 (`make fortran-bench`、
+[results-fortran/dgemm.txt](results-fortran/dgemm.txt))。`external dgemm` を呼ぶだけの Fortran
+(`fortran/dgemm_bench.f90`) を OpenBLAS にリンクして 1 回だけビルドし、同じバイナリを次の 3 条件で動かす。
+
+| 条件 | 実行方法 |
+|---|---|
+| `fortran-openblas` | そのまま (OpenBLAS、14 スレッド) |
+| `fortran-nvblas-native` | `LD_PRELOAD=libnvblas.so.13` + `CUBLAS_EMULATE_DOUBLE_PRECISION=0` |
+| `fortran-nvblas-emu` | `LD_PRELOAD=libnvblas.so.13` + `CUBLAS_EMULATE_DOUBLE_PRECISION=1` |
+
+NVBLAS は呼び出しのたびに A, B を GPU に送り、C を戻すので、時間は PCIe 転送込みの end-to-end になる。
+精度は real128 の内積を参照にしたサンプル比較 (`benchmark_dgemm.py` と同じ scaled err)。
+
+| N (φ=0.5) | OpenBLAS | NVBLAS native | NVBLAS emu | emu / OpenBLAS | emu / native |
+|---:|---:|---:|---:|---:|---:|
+| 4000 | 0.391 s | 0.238 s | 0.099 s | 4.0x | 2.4x |
+| 8000 | 2.537 s | 1.530 s | 0.361 s | 7.0x | 4.2x |
+| 16000 | 23.40 s | 11.75 s | 2.258 s | **10.4x** | 5.2x |
+
+- NVBLAS 経由でもエミュレーションの環境変数が効き、nsys で Ozaki-II (`oz2_int8_dgemm`) を確認した。
+  N=8000 のカーネル時間は 71.4 ms で、CuPy 経路 (71.7 ms) と同じ
+- 誤差は emu が 0.026–0.080u、native が 0.47–1.70u、OpenBLAS が 0.21–0.34u
+- このマシンの GPU は PCIe x4 接続 (実効 5–6 GB/s) で、N=8000 では end-to-end の約 7 割が転送。
+  GPU 常駐の CuPy (OpenBLAS 比 44x) には届かない
+- `NVBLAS_AUTOPIN_MEM_ENABLED` は emu では逆効果 (N=8000 で 0.53 s → なしで 0.36 s)。既定ではオフ
+- **NVBLAS は無言で失敗する**: `NVBLAS_TILE_DIM 16384` (16 GB の GPU) では `cublasXtDgemm` が
+  `CUBLAS_STATUS_ALLOC_FAILED` で失敗するが、`dgemm_` は C に触れずに戻り、エラーは NVBLAS のログにしか出ない。
+  `run_fortran_benchmarks.sh` は実行ごとにログを確認し、失敗を `FAILED` 行として記録する
+
 ## 使い方
 
 ```bash
@@ -148,6 +179,8 @@ make profile      # nsys で実行カーネルを確認 (results/nsys/)
 make cpu-quick    # C++/Eigen + NumPy の CPU ベースラインを小サイズで動作確認 (results-quick/)
 make cpu-bench    # CPU ベースライン本番 (results/)。DGEMM + PDE、スレッド 6/14/16
 make cpu-phi-sweep  # CPU の φ 掃引 (results-phi/)。THREADS=14 のようにスレッド数を指定
+make fortran-quick  # Fortran + NVBLAS の drop-in を小サイズで動作確認 (results-quick/fortran/)
+make fortran-bench  # Fortran + NVBLAS の drop-in 本番 (results-fortran/)。先に make build が必要
 make analyze      # results/ と results-phi/ から図と report.md を再生成
 ```
 
@@ -188,6 +221,10 @@ results/
 └── report.md         # 表と図をまとめたレポート
 
 results-phi/          # φ 掃引 (図に dgemm_phi_tflops.png / dgemm_phi_error.png が加わる)
+
+results-fortran/
+├── dgemm.txt         # Fortran drop-in の RESULT 行 (条件・タイルごと) と nsys の判定 (NSYS 行)
+└── nsys/fortran-nvblas-emu/  # *.nsys-rep とカーネル / memcpy の集計 CSV
 ```
 
 NumPy の参照解は `cache/` にキャッシュされ、全条件で同じものを使う (NumPy は全イメージで同一バージョンに固定)。
@@ -200,6 +237,7 @@ NumPy の参照解は `cache/` にキャッシュされ、全条件で同じも�
 │   ├── Dockerfile.cuda12      # CUDA 12.9.1 + CuPy (cupy-cuda12x)
 │   ├── Dockerfile.cuda13      # CUDA 13.4.2 + CuPy (cupy-cuda13x)
 │   ├── Dockerfile.cpu         # Ubuntu 24.04 + g++ 13 + Eigen 3.4 + CMake
+│   ├── Dockerfile.fortran     # cuda13 イメージ + gfortran 13 + OpenBLAS (NVBLAS は CUDA 同梱)
 │   ├── requirements.txt       # NumPy / matplotlib (全イメージ共通で固定)
 │   └── requirements-cpu.txt   # + threadpoolctl (OpenBLAS のスレッド数制御)
 ├── docker-compose.yml
@@ -207,6 +245,8 @@ NumPy の参照解は `cache/` にキャッシュされ、全条件で同じも�
 │   ├── cpu_bench.cpp          # C++/Eigen の DGEMM / ADI / FTCS (サブコマンド)
 │   ├── npy.hpp                # 2D float64 .npy の読み書き
 │   └── CMakeLists.txt
+├── fortran/
+│   └── dgemm_bench.f90        # BLAS の dgemm を呼ぶだけの Fortran ドライバ (real128 で精度確認)
 ├── src/
 │   ├── common.py              # 環境情報の収集、CUDA event タイマー
 │   ├── benchmark_dgemm.py     # DGEMM ベンチマーク
@@ -220,6 +260,7 @@ NumPy の参照解は `cache/` にキャッシュされ、全条件で同じも�
 ├── run_benchmarks.sh          # 全条件・全ベンチを一括実行
 ├── profile_kernels.sh         # nsys で実行カーネルを確認
 ├── run_cpu_benchmarks.sh      # CPU ベースラインを一括実行
+├── run_fortran_benchmarks.sh  # Fortran + NVBLAS の drop-in 実験を一括実行
 ├── Makefile
 └── slides-jp/                 # 発表スライド
 ```
