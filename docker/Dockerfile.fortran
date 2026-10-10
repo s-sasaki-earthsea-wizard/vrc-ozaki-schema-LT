@@ -1,0 +1,14 @@
+# Fortran drop-in experiment: an unmodified Fortran program that calls DGEMM through the
+# standard BLAS interface, run either on OpenBLAS (CPU) or on the GPU via NVBLAS
+# (LD_PRELOAD=libnvblas.so), with cuBLAS FP64 emulation toggled by
+# CUBLAS_EMULATE_DOUBLE_PRECISION.
+#
+# Built on top of the cuda13 image so that cuBLAS / NVBLAS / nsys are exactly the ones
+# used by the CUDA 13.4 conditions. Build that image first (`make build`).
+# The Fortran code is compiled at run time (run_fortran_benchmarks.sh) from fortran/.
+ARG BASE_IMAGE=vrc-ozaki/cuda13:latest
+FROM ${BASE_IMAGE}
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends gfortran libopenblas-dev \
+    && rm -rf /var/lib/apt/lists/*
