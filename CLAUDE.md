@@ -13,6 +13,9 @@ CUDA 12 環境との対照実験で定量評価する。成果は VRChat 物理�
 - CPU ベースライン: `cpu-eigen` (C++17 + Eigen 3.4 ネイティブ GEMM + OpenMP, `cpp/cpu_bench`) と
   `cpu-numpy` (OpenBLAS)。入力は Python が `.npy` で渡し、精度評価も Python 側の同じロジックで行う。
   スレッド 6 / 14 / 16 (P / P+E / 全コア) を掃引し、最速を代表値にする
+- Fortran drop-in (`fortran/`, `fortran` サービス = cuda13 + gfortran + OpenBLAS): OpenBLAS にリンクした
+  同一バイナリを `LD_PRELOAD=libnvblas.so.13` で cuBLAS に回し、エミュレーションを環境変数で切り替える。
+  時間は PCIe 転送込み。NVBLAS は失敗しても `dgemm_` が黙って戻るので、ランナーが毎回 NVBLAS のログを確認する
 - 両イメージともホストドライバの libcuda を使う (cuda13 イメージから forward-compat libcuda を削除済み)
 - ワークロード: DGEMM、2D 熱方程式 (ADI-GEMM / FTCS ステンシル = 負の対照)
 - 精度: NumPy 比較、厳密丸め参照 (TwoProduct + fsum) とのサンプル比較、PDE の離散厳密解との比較
@@ -24,6 +27,8 @@ CUDA 12 環境との対照実験で定量評価する。成果は VRChat 物理�
 - [x] 本番測定 (phi=0.5): DGEMM 最大 19.2x、ADI 最大 15.9x、ステンシル 1.00x
 - [x] nsys によるカーネル確認、phi 掃引
 - [x] C++/Eigen の CPU ベースライン: Eigen 比で GPU native 2.5x、GPU Ozaki 48x (DGEMM N=16000)、ADI 39x
+- [x] Fortran + NVBLAS の drop-in: 再ビルドなしで Ozaki-II が動く。OpenBLAS 比 10.4x (N=16000)。
+  PCIe x4 のため転送が約 7 割。スライドへの反映は保留
 - [ ] スライド作成
 
 ## 言語設定
