@@ -1,0 +1,20 @@
+# Fortran DGEMM drop-in: 2026-10-11T00:27:01+09:00
+# phi=0.5 repeats=3 samples=64 openblas_threads=14 autopin=0
+# GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+# gpu, driver, pcie gen max, pcie width: NVIDIA GeForce RTX 5080, 590.48.01, 4, 4
+RESULT condition=fortran-openblas threads=14 n=4000 phi=0.50 repeats=3 samples=64 warmup_s=0.3913 median_s=0.3909 min_s=0.3907 gflops_median=327.4 max_scaled_err_u=0.342 mean_scaled_err_u=0.121
+RESULT condition=fortran-nvblas-native tile=2048 n=4000 phi=0.50 repeats=3 samples=64 warmup_s=0.4882 median_s=0.2721 min_s=0.2716 gflops_median=470.4 max_scaled_err_u=1.402 mean_scaled_err_u=0.295
+RESULT condition=fortran-nvblas-emu tile=2048 n=4000 phi=0.50 repeats=3 samples=64 warmup_s=0.3957 median_s=0.1294 min_s=0.1290 gflops_median=988.9 max_scaled_err_u=0.053 mean_scaled_err_u=0.014
+RESULT condition=fortran-nvblas-native tile=8192 n=4000 phi=0.50 repeats=3 samples=64 warmup_s=0.4238 median_s=0.2384 min_s=0.2383 gflops_median=536.8 max_scaled_err_u=1.394 mean_scaled_err_u=0.377
+RESULT condition=fortran-nvblas-emu tile=8192 n=4000 phi=0.50 repeats=3 samples=64 warmup_s=0.3827 median_s=0.0987 min_s=0.0973 gflops_median=1296.6 max_scaled_err_u=0.067 mean_scaled_err_u=0.009
+RESULT condition=fortran-openblas threads=14 n=8000 phi=0.50 repeats=3 samples=64 warmup_s=2.8973 median_s=2.5367 min_s=2.4323 gflops_median=403.7 max_scaled_err_u=0.230 mean_scaled_err_u=0.071
+RESULT condition=fortran-nvblas-native tile=2048 n=8000 phi=0.50 repeats=3 samples=64 warmup_s=2.2568 median_s=2.0764 min_s=2.0637 gflops_median=493.2 max_scaled_err_u=0.973 mean_scaled_err_u=0.163
+RESULT condition=fortran-nvblas-emu tile=2048 n=8000 phi=0.50 repeats=3 samples=64 warmup_s=1.1265 median_s=0.9049 min_s=0.9036 gflops_median=1131.7 max_scaled_err_u=0.080 mean_scaled_err_u=0.015
+RESULT condition=fortran-nvblas-native tile=8192 n=8000 phi=0.50 repeats=3 samples=64 warmup_s=1.7550 median_s=1.5301 min_s=1.5295 gflops_median=669.2 max_scaled_err_u=1.699 mean_scaled_err_u=0.370
+RESULT condition=fortran-nvblas-emu tile=8192 n=8000 phi=0.50 repeats=3 samples=64 warmup_s=0.5550 median_s=0.3607 min_s=0.3606 gflops_median=2839.1 max_scaled_err_u=0.041 mean_scaled_err_u=0.008
+RESULT condition=fortran-openblas threads=14 n=16000 phi=0.50 repeats=3 samples=64 warmup_s=19.3218 median_s=23.4040 min_s=22.9488 gflops_median=350.0 max_scaled_err_u=0.206 mean_scaled_err_u=0.062
+RESULT condition=fortran-nvblas-native tile=2048 n=16000 phi=0.50 repeats=3 samples=64 warmup_s=16.2257 median_s=15.9266 min_s=15.9020 gflops_median=514.4 max_scaled_err_u=0.465 mean_scaled_err_u=0.149
+RESULT condition=fortran-nvblas-emu tile=2048 n=16000 phi=0.50 repeats=3 samples=64 warmup_s=6.9926 median_s=6.6807 min_s=6.6738 gflops_median=1226.2 max_scaled_err_u=0.058 mean_scaled_err_u=0.013
+RESULT condition=fortran-nvblas-native tile=8192 n=16000 phi=0.50 repeats=3 samples=64 warmup_s=11.9528 median_s=11.7463 min_s=11.7194 gflops_median=697.4 max_scaled_err_u=0.982 mean_scaled_err_u=0.258
+RESULT condition=fortran-nvblas-emu tile=8192 n=16000 phi=0.50 repeats=3 samples=64 warmup_s=2.5188 median_s=2.2578 min_s=2.2510 gflops_median=3628.3 max_scaled_err_u=0.026 mean_scaled_err_u=0.006
+NSYS condition=fortran-nvblas-emu n=8000 tile=8192 path=Ozaki-II kernel_ms_per_dgemm=71.4 memcpy_ms_per_dgemm=255.9
